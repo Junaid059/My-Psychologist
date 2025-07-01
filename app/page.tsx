@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { ChevronDown, Brain, Heart, Shield, Users, Star, Check, Menu, X, ArrowRight, Sparkles, Zap, Award } from 'lucide-react';
 
 const MyPsychologist = () => {
@@ -100,15 +101,15 @@ const MyPsychologist = () => {
 
   const FloatingElements = () => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-pink-400/20 to-purple-400/20 rounded-full blur-xl animate-pulse"></div>
-      <div className="absolute top-40 right-20 w-32 h-32 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 rounded-full blur-xl animate-pulse delay-1000"></div>
-      <div className="absolute bottom-40 left-20 w-24 h-24 bg-gradient-to-r from-emerald-400/20 to-teal-400/20 rounded-full blur-xl animate-pulse delay-2000"></div>
-      <div className="absolute bottom-20 right-10 w-16 h-16 bg-gradient-to-r from-orange-400/20 to-red-400/20 rounded-full blur-xl animate-pulse delay-3000"></div>
+      <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-sky-300/20 to-indigo-300/20 rounded-full blur-xl animate-pulse"></div>
+      <div className="absolute top-40 right-20 w-32 h-32 bg-gradient-to-r from-blue-300/20 to-cyan-300/20 rounded-full blur-xl animate-pulse delay-1000"></div>
+      <div className="absolute bottom-40 left-20 w-24 h-24 bg-gradient-to-r from-teal-300/20 to-emerald-300/20 rounded-full blur-xl animate-pulse delay-2000"></div>
+      <div className="absolute bottom-20 right-10 w-16 h-16 bg-gradient-to-r from-indigo-300/20 to-purple-300/20 rounded-full blur-xl animate-pulse delay-3000"></div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-blue-50 to-indigo-50 text-slate-800 overflow-hidden">
       <style jsx>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         
@@ -117,33 +118,34 @@ const MyPsychologist = () => {
         }
         
         .glass-effect {
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.7);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.8);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
         
         .glow-effect {
-          box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+          box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
         }
         
         .text-gradient {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: linear-gradient(135deg, #3b82f6 0%, #0ea5e9 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
         }
         
         .animate-float {
-          animation: float 6s ease-in-out infinite;
+          animation: float 8s ease-in-out infinite;
         }
         
         .animate-float-delayed {
-          animation: float 6s ease-in-out infinite;
+          animation: float 8s ease-in-out infinite;
           animation-delay: 2s;
         }
         
         .animate-slide-up {
-          animation: slideUp 0.8s ease-out forwards;
+          animation: slideUp 1s ease-out forwards;
         }
         
         .animate-fade-in {
@@ -152,7 +154,7 @@ const MyPsychologist = () => {
         
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
+          50% { transform: translateY(-10px); }
         }
         
         @keyframes slideUp {
@@ -198,39 +200,49 @@ const MyPsychologist = () => {
       }`}>
         <div className="container mx-auto px-6 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-xl flex items-center justify-center">
               <Brain className="w-6 h-6 text-white" />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
               MyPsychologist
             </span>
           </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            {['Home', 'About', 'Services', 'Testimonials', 'Pricing', 'Contact'].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="text-gray-300 hover:text-white transition-all duration-300 hover:scale-105 font-medium"
-              >
-                {item}
-              </a>
-            ))}
+            <Link href="/" className="text-slate-800 transition-all duration-300 hover:scale-105 font-medium relative">
+              Home
+              <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-500"></div>
+            </Link>
+            <Link href="/about" className="text-slate-600 hover:text-slate-800 transition-all duration-300 hover:scale-105 font-medium">
+              About
+            </Link>
+            <Link href="/service" className="text-slate-600 hover:text-slate-800 transition-all duration-300 hover:scale-105 font-medium">
+              Services
+            </Link>
+            <Link href="/faq" className="text-slate-600 hover:text-slate-800 transition-all duration-300 hover:scale-105 font-medium">
+              FAQ
+            </Link>
+            <a href="#testimonials" className="text-slate-600 hover:text-slate-800 transition-all duration-300 hover:scale-105 font-medium">
+              Testimonials
+            </a>
+            <Link href="/contact" className="text-slate-600 hover:text-slate-800 transition-all duration-300 hover:scale-105 font-medium">
+              Contact
+            </Link>
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
-            <button className="px-6 py-2 text-gray-300 hover:text-white transition-all duration-300 font-medium">
+            <Link href="/login" className="px-6 py-2 text-slate-600 hover:text-slate-800 transition-all duration-300 font-medium">
               Login
-            </button>
-            <button className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full hover:from-cyan-400 hover:to-purple-400 transition-all duration-300 hover:scale-105 hover:shadow-lg font-medium">
-              Get Started
-            </button>
+            </Link>
+            <Link href="/booking" className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full hover:from-blue-400 hover:to-cyan-400 transition-all duration-300 hover:scale-105 hover:shadow-lg font-medium">
+              Book Session
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white"
+            className="md:hidden text-slate-800"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -240,23 +252,31 @@ const MyPsychologist = () => {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden mt-4 glass-effect mx-4 rounded-2xl p-6 animate-slide-up">
-            {['Home', 'About', 'Services', 'Testimonials', 'Pricing', 'Contact'].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="block py-3 text-gray-300 hover:text-white transition-all duration-300 font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item}
-              </a>
-            ))}
+            <Link href="/" className="block py-3 text-slate-800 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+              Home
+            </Link>
+            <Link href="/about" className="block py-3 text-slate-600 hover:text-slate-800 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+              About
+            </Link>
+            <Link href="/service" className="block py-3 text-slate-600 hover:text-slate-800 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+              Services
+            </Link>
+            <Link href="/faq" className="block py-3 text-slate-600 hover:text-slate-800 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+              FAQ
+            </Link>
+            <a href="#testimonials" className="block py-3 text-slate-600 hover:text-slate-800 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+              Testimonials
+            </a>
+            <Link href="/contact" className="block py-3 text-slate-600 hover:text-slate-800 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+              Contact
+            </Link>
             <div className="flex flex-col space-y-3 mt-6">
-              <button className="py-3 text-gray-300 hover:text-white transition-all duration-300 font-medium">
+              <Link href="/login" className="py-3 text-slate-600 hover:text-slate-800 transition-all duration-300 font-medium">
                 Login
-              </button>
-              <button className="py-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full hover:from-cyan-400 hover:to-purple-400 transition-all duration-300 font-medium">
-                Get Started
-              </button>
+              </Link>
+              <Link href="/booking" className="py-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full hover:from-blue-400 hover:to-cyan-400 transition-all duration-300 font-medium">
+                Book Session
+              </Link>
             </div>
           </div>
         )}
@@ -269,53 +289,53 @@ const MyPsychologist = () => {
         <div className="container mx-auto px-6 text-center relative z-10">
           <div className="animate-fade-in">
             <div className="inline-flex items-center px-4 py-2 glass-effect rounded-full mb-8 hover-lift">
-              <Sparkles className="w-4 h-4 mr-2 text-cyan-400" />
-              <span className="text-sm font-medium text-gray-300">Transform Your Mind, Transform Your Life</span>
+              <Sparkles className="w-4 h-4 mr-2 text-blue-500" />
+              <span className="text-sm font-medium text-slate-600">Transform Your Mind, Transform Your Life</span>
             </div>
             
             <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-slate-700 to-slate-800 bg-clip-text text-transparent">
                 Healing Minds,
               </span>
               <br />
-              <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-float">
+              <span className="bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500 bg-clip-text text-transparent animate-float">
                 Inspiring Lives
               </span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-slate-600 mb-12 max-w-3xl mx-auto leading-relaxed">
               Experience world-class psychological support with cutting-edge therapeutic approaches. 
               Your journey to mental wellness starts with a single step.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <button className="group px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full hover:from-cyan-400 hover:to-purple-400 transition-all duration-300 hover:scale-105 hover:shadow-2xl font-bold text-lg flex items-center">
-                Start Your Journey
+              <Link href="/booking" className="group px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full hover:from-blue-400 hover:to-cyan-400 transition-all duration-300 hover:scale-105 hover:shadow-lg font-bold text-lg flex items-center text-white">
+                Book a Session
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-              </button>
-              <button className="px-8 py-4 glass-effect rounded-full hover:bg-white/20 transition-all duration-300 hover:scale-105 font-bold text-lg border border-white/30">
+              </Link>
+              <Link href="/about" className="px-8 py-4 glass-effect rounded-full hover:bg-white/60 transition-all duration-300 hover:scale-105 font-bold text-lg border border-sky-200 text-slate-600">
                 Learn More
-              </button>
+              </Link>
             </div>
           </div>
 
           {/* Hero Visual */}
           <div className="mt-20 relative">
             <div className="w-80 h-80 mx-auto relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/30 to-purple-500/30 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-300/30 to-sky-300/30 rounded-full blur-3xl animate-pulse"></div>
               <div className="relative w-full h-full glass-effect rounded-full flex items-center justify-center animate-float">
-                <Brain className="w-32 h-32 text-cyan-400" />
+                <Brain className="w-32 h-32 text-blue-500" />
               </div>
               
               {/* Floating Icons */}
               <div className="absolute -top-4 -left-4 w-16 h-16 glass-effect rounded-full flex items-center justify-center animate-float-delayed">
-                <Heart className="w-8 h-8 text-pink-400" />
+                <Heart className="w-8 h-8 text-blue-400" />
               </div>
               <div className="absolute -bottom-4 -right-4 w-16 h-16 glass-effect rounded-full flex items-center justify-center animate-float">
-                <Shield className="w-8 h-8 text-emerald-400" />
+                <Shield className="w-8 h-8 text-cyan-500" />
               </div>
               <div className="absolute top-1/2 -right-8 w-16 h-16 glass-effect rounded-full flex items-center justify-center animate-float-delayed">
-                <Users className="w-8 h-8 text-orange-400" />
+                <Users className="w-8 h-8 text-teal-500" />
               </div>
             </div>
           </div>
@@ -323,24 +343,24 @@ const MyPsychologist = () => {
 
         {/* Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ChevronDown className="w-8 h-8 text-gray-400" />
+          <ChevronDown className="w-8 h-8 text-blue-300" />
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-24 relative">
+      <section id="testimonials" className="py-24 relative">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black mb-6">
-              <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-slate-700 to-slate-800 bg-clip-text text-transparent">
                 What Our Clients
               </span>
               <br />
-              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
                 Are Saying
               </span>
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
               Real stories from real people who transformed their lives with our support
             </p>
           </div>
@@ -349,21 +369,21 @@ const MyPsychologist = () => {
             <div className="glass-effect rounded-3xl p-8 md:p-12 hover-lift">
               <div className="flex items-center justify-center mb-6">
                 {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                  <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
+                  <Star key={i} className="w-6 h-6 text-amber-400 fill-current" />
                 ))}
               </div>
               
-              <blockquote className="text-2xl md:text-3xl text-center mb-8 leading-relaxed font-medium text-gray-100">
+              <blockquote className="text-2xl md:text-3xl text-center mb-8 leading-relaxed font-medium text-slate-700">
                 "{testimonials[currentTestimonial].content}"
               </blockquote>
               
               <div className="flex items-center justify-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center mr-4 font-bold">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-full flex items-center justify-center mr-4 font-bold text-white">
                   {testimonials[currentTestimonial].avatar}
                 </div>
                 <div>
-                  <div className="font-bold text-lg">{testimonials[currentTestimonial].name}</div>
-                  <div className="text-gray-400">{testimonials[currentTestimonial].role}</div>
+                  <div className="font-bold text-lg text-slate-700">{testimonials[currentTestimonial].name}</div>
+                  <div className="text-slate-500">{testimonials[currentTestimonial].role}</div>
                 </div>
               </div>
             </div>
@@ -375,8 +395,8 @@ const MyPsychologist = () => {
                   key={index}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
                     index === currentTestimonial
-                      ? 'bg-gradient-to-r from-cyan-400 to-purple-500 scale-125'
-                      : 'bg-gray-600 hover:bg-gray-500'
+                      ? 'bg-gradient-to-r from-blue-400 to-cyan-500 scale-125'
+                      : 'bg-slate-300 hover:bg-slate-400'
                   }`}
                   onClick={() => setCurrentTestimonial(index)}
                 />
@@ -391,15 +411,15 @@ const MyPsychologist = () => {
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black mb-6">
-              <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-slate-700 to-slate-800 bg-clip-text text-transparent">
                 Choose Your
               </span>
               <br />
-              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
                 Healing Journey
               </span>
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
               Flexible packages designed to meet you wherever you are in your mental health journey
             </p>
           </div>
@@ -413,7 +433,7 @@ const MyPsychologist = () => {
                 }`}
               >
                 {pkg.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full text-sm font-bold z-10">
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-full text-sm font-bold z-10 text-white">
                     Most Popular
                   </div>
                 )}
@@ -425,37 +445,40 @@ const MyPsychologist = () => {
                         {pkg.icon}
                       </div>
                       {pkg.popular && (
-                        <div className="px-3 py-1 bg-gradient-to-r from-cyan-400/20 to-purple-500/20 rounded-full text-xs font-bold border border-cyan-400/30">
+                        <div className="px-3 py-1 bg-gradient-to-r from-blue-300/20 to-cyan-300/20 rounded-full text-xs font-bold border border-blue-300/30 text-blue-600">
                           BEST VALUE
                         </div>
                       )}
                     </div>
                     
-                    <h3 className="text-2xl font-bold mb-2">{pkg.name}</h3>
+                    <h3 className="text-2xl font-bold mb-2 text-slate-700">{pkg.name}</h3>
                     <div className="flex items-baseline mb-4">
-                      <span className="text-4xl font-black">${pkg.price}</span>
-                      <span className="text-gray-400 ml-2 line-through">${pkg.originalPrice}</span>
+                      <span className="text-4xl font-black text-slate-700">${pkg.price}</span>
+                      <span className="text-slate-500 ml-2 line-through">${pkg.originalPrice}</span>
                     </div>
-                    <div className="text-gray-300 mb-6">
+                    <div className="text-slate-600 mb-6">
                       {pkg.sessions} Premium Sessions
                     </div>
                     
                     <ul className="space-y-3 mb-8">
                       {pkg.features.map((feature, featureIndex) => (
                         <li key={featureIndex} className="flex items-center">
-                          <Check className="w-5 h-5 text-emerald-400 mr-3 flex-shrink-0" />
-                          <span className="text-gray-300">{feature}</span>
+                          <Check className="w-5 h-5 text-cyan-500 mr-3 flex-shrink-0" />
+                          <span className="text-slate-600">{feature}</span>
                         </li>
                       ))}
                     </ul>
                     
-                    <button className={`w-full py-4 rounded-xl font-bold transition-all duration-300 hover:scale-105 ${
-                      pkg.popular
-                        ? 'bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white'
-                        : 'glass-effect border border-white/30 hover:bg-white/20 text-white'
-                    }`}>
-                      Choose Package
-                    </button>
+                    <Link 
+                      href="/booking" 
+                      className={`w-full py-4 rounded-xl font-bold transition-all duration-300 hover:scale-105 block text-center ${
+                        pkg.popular
+                          ? 'bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 text-white'
+                          : 'glass-effect border border-sky-200 hover:bg-white/60 text-slate-600'
+                      }`}
+                    >
+                      Book Now
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -463,18 +486,18 @@ const MyPsychologist = () => {
           </div>
 
           <div className="text-center mt-12">
-            <p className="text-gray-400 mb-4">All packages include a 30-day satisfaction guarantee</p>
-            <div className="flex items-center justify-center space-x-6 text-sm text-gray-500">
+            <p className="text-slate-500 mb-4">All packages include a 30-day satisfaction guarantee</p>
+            <div className="flex items-center justify-center space-x-6 text-sm text-slate-500">
               <div className="flex items-center">
-                <Shield className="w-4 h-4 mr-2" />
+                <Shield className="w-4 h-4 mr-2 text-blue-500" />
                 Secure Payments
               </div>
               <div className="flex items-center">
-                <Award className="w-4 h-4 mr-2" />
+                <Award className="w-4 h-4 mr-2 text-blue-500" />
                 Licensed Professionals
               </div>
               <div className="flex items-center">
-                <Heart className="w-4 h-4 mr-2" />
+                <Heart className="w-4 h-4 mr-2 text-blue-500" />
                 Confidential Care
               </div>
             </div>
@@ -484,46 +507,51 @@ const MyPsychologist = () => {
 
       {/* Footer */}
       <footer className="py-16 relative">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-200/50 to-transparent"></div>
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div className="md:col-span-2">
               <div className="flex items-center space-x-3 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-xl flex items-center justify-center">
                   <Brain className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
                   MyPsychologist
                 </span>
               </div>
-              <p className="text-gray-400 text-lg leading-relaxed max-w-md">
+              <p className="text-slate-600 text-lg leading-relaxed max-w-md">
                 Transforming lives through innovative psychological care and personalized therapeutic approaches.
               </p>
               <div className="flex space-x-4 mt-6">
                 {['facebook', 'twitter', 'instagram', 'linkedin'].map((social) => (
                   <div key={social} className="w-10 h-10 glass-effect rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer">
-                    <div className="w-5 h-5 bg-gradient-to-r from-cyan-400 to-purple-500 rounded"></div>
+                    <div className="w-5 h-5 bg-gradient-to-r from-blue-400 to-cyan-500 rounded"></div>
                   </div>
                 ))}
               </div>
             </div>
             
             <div>
-              <h4 className="text-lg font-bold mb-4 text-white">Quick Links</h4>
+              <h4 className="text-lg font-bold mb-4 text-slate-700">Quick Links</h4>
               <ul className="space-y-3">
-                {['About Us', 'Services', 'Testimonials', 'Blog', 'Contact'].map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">
-                      {link}
-                    </a>
+                {[
+                  { name: 'About Us', href: '/about' },
+                  { name: 'Services', href: '/service' },
+                  { name: 'FAQ', href: '/faq' },
+                  { name: 'Contact', href: '/contact' }
+                ].map((link) => (
+                  <li key={link.name}>
+                    <Link href={link.href} className="text-slate-600 hover:text-blue-500 transition-colors duration-300">
+                      {link.name}
+                    </Link>
                   </li>
                 ))}
               </ul>
             </div>
             
             <div>
-              <h4 className="text-lg font-bold mb-4 text-white">Contact Info</h4>
-              <div className="space-y-3 text-gray-400">
+              <h4 className="text-lg font-bold mb-4 text-slate-700">Contact Info</h4>
+              <div className="space-y-3 text-slate-600">
                 <p>123 Wellness Street</p>
                 <p>Mental Health City, MH 12345</p>
                 <p>+1 (555) 123-4567</p>
@@ -532,8 +560,8 @@ const MyPsychologist = () => {
             </div>
           </div>
           
-          <div className="border-t border-gray-800 pt-8 text-center">
-            <p className="text-gray-400">
+          <div className="border-t border-slate-200 pt-8 text-center">
+            <p className="text-slate-500">
               &copy; 2024 MyPsychologist. All rights reserved. | Privacy Policy | Terms of Service
             </p>
           </div>

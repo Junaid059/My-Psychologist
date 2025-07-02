@@ -114,7 +114,7 @@ const LoginPage = () => {
             </span>
           </Link>
 
-          {/* Desktop Menu */}
+          {/* Desktop Menu - Centered */}
           <div className="hidden md:flex items-center space-x-8">
             <Link href="/" className="text-slate-700 hover:text-blue-600 transition-all duration-300 hover:scale-105 font-medium">
               Home
@@ -130,6 +130,13 @@ const LoginPage = () => {
             </Link>
             <Link href="/contact" className="text-slate-700 hover:text-blue-600 transition-all duration-300 hover:scale-105 font-medium">
               Contact
+            </Link>
+          </div>
+
+          {/* Right Side Actions */}
+          <div className="hidden md:flex items-center space-x-4">
+            <Link href="/booking" className="px-6 py-3 bg-gradient-to-r from-blue-500 to-teal-400 rounded-full hover:from-blue-600 hover:to-teal-500 transition-all duration-300 hover:scale-105 hover:shadow-lg font-medium text-white">
+              Book Session
             </Link>
           </div>
 

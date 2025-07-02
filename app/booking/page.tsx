@@ -201,7 +201,7 @@ const BookingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-blue-50 to-indigo-50 text-slate-800 overflow-hidden">
       <style jsx>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         
@@ -210,9 +210,10 @@ const BookingPage = () => {
         }
         
         .glass-effect {
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.7);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.8);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
         
         .animate-float {
@@ -243,39 +244,49 @@ const BookingPage = () => {
       `}</style>
 
       {/* Navbar */}
-      <nav className="py-6">
+      <nav className="py-6 bg-white/80 backdrop-blur-sm">
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-teal-400 rounded-xl flex items-center justify-center shadow-md">
               <Brain className="w-6 h-6 text-white" />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
               MyPsychologist
             </span>
           </Link>
 
-          {/* Desktop Menu */}
+          {/* Desktop Menu - Centered */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-300 hover:text-white transition-all duration-300 hover:scale-105 font-medium">
+            <Link href="/" className="text-slate-700 hover:text-blue-600 transition-all duration-300 hover:scale-105 font-medium">
               Home
             </Link>
-            <Link href="/about" className="text-gray-300 hover:text-white transition-all duration-300 hover:scale-105 font-medium">
+            <Link href="/about" className="text-slate-700 hover:text-blue-600 transition-all duration-300 hover:scale-105 font-medium">
               About
             </Link>
-            <Link href="/service" className="text-gray-300 hover:text-white transition-all duration-300 hover:scale-105 font-medium">
+            <Link href="/service" className="text-slate-700 hover:text-blue-600 transition-all duration-300 hover:scale-105 font-medium">
               Services
             </Link>
-            <Link href="/faq" className="text-gray-300 hover:text-white transition-all duration-300 hover:scale-105 font-medium">
+            <Link href="/faq" className="text-slate-700 hover:text-blue-600 transition-all duration-300 hover:scale-105 font-medium">
               FAQ
             </Link>
-            <Link href="/contact" className="text-gray-300 hover:text-white transition-all duration-300 hover:scale-105 font-medium">
+            <Link href="/contact" className="text-slate-700 hover:text-blue-600 transition-all duration-300 hover:scale-105 font-medium">
               Contact
+            </Link>
+          </div>
+
+          {/* Right Side Actions */}
+          <div className="hidden md:flex items-center space-x-4">
+            <Link href="/login" className="px-6 py-2 text-slate-700 hover:text-blue-600 transition-all duration-300 font-medium">
+              Login
+            </Link>
+            <Link href="/booking" className="px-6 py-3 bg-gradient-to-r from-blue-500 to-teal-400 rounded-full hover:from-blue-600 hover:to-teal-500 transition-all duration-300 hover:scale-105 hover:shadow-lg font-medium text-white">
+              Book Session
             </Link>
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white"
+            className="md:hidden text-slate-800"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -284,20 +295,20 @@ const BookingPage = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 glass-effect mx-4 rounded-2xl p-6 animate-slide-up">
-            <Link href="/" className="block py-3 text-gray-300 hover:text-white transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+          <div className="md:hidden mt-4 bg-white/90 backdrop-blur-sm mx-4 rounded-2xl p-6 shadow-lg border border-blue-100">
+            <Link href="/" className="block py-3 text-slate-700 hover:text-blue-600 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
               Home
             </Link>
-            <Link href="/about" className="block py-3 text-gray-300 hover:text-white transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+            <Link href="/about" className="block py-3 text-slate-700 hover:text-blue-600 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
               About
             </Link>
-            <Link href="/service" className="block py-3 text-gray-300 hover:text-white transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+            <Link href="/service" className="block py-3 text-slate-700 hover:text-blue-600 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
               Services
             </Link>
-            <Link href="/faq" className="block py-3 text-gray-300 hover:text-white transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+            <Link href="/faq" className="block py-3 text-slate-700 hover:text-blue-600 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
               FAQ
             </Link>
-            <Link href="/contact" className="block py-3 text-gray-300 hover:text-white transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+            <Link href="/contact" className="block py-3 text-slate-700 hover:text-blue-600 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
               Contact
             </Link>
           </div>
@@ -306,9 +317,10 @@ const BookingPage = () => {
 
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-pink-400/20 to-purple-400/20 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-32 h-32 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 rounded-full blur-xl animate-pulse delay-1000"></div>
-        <div className="absolute bottom-40 left-20 w-24 h-24 bg-gradient-to-r from-emerald-400/20 to-teal-400/20 rounded-full blur-xl animate-pulse delay-2000"></div>
+        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-blue-100/30 to-sky-100/30 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-32 h-32 bg-gradient-to-r from-teal-100/30 to-cyan-100/30 rounded-full blur-xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-40 left-20 w-24 h-24 bg-gradient-to-r from-amber-50/30 to-yellow-50/30 rounded-full blur-xl animate-pulse delay-2000"></div>
+        <div className="absolute bottom-20 right-10 w-16 h-16 bg-gradient-to-r from-sky-100/30 to-indigo-100/30 rounded-full blur-xl animate-pulse delay-3000"></div>
       </div>
 
       {/* Booking Content */}
@@ -317,15 +329,15 @@ const BookingPage = () => {
           {/* Header */}
           <div className="text-center mb-10">
             <h1 className="text-4xl md:text-5xl font-black mb-4">
-              <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-slate-700 to-slate-800 bg-clip-text text-transparent">
                 Book Your
               </span>
               <br />
-              <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-teal-500 bg-clip-text text-transparent">
                 Therapy Session
               </span>
             </h1>
-            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+            <p className="text-slate-600 text-lg max-w-2xl mx-auto">
               Take the first step toward your mental wellness journey by scheduling an appointment with one of our experienced therapists.
             </p>
           </div>
@@ -337,8 +349,8 @@ const BookingPage = () => {
                 <div key={step} className="flex flex-col items-center">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                     currentStep >= step
-                      ? 'bg-gradient-to-r from-cyan-500 to-purple-500'
-                      : 'glass-effect'
+                      ? 'bg-gradient-to-r from-blue-500 to-teal-400 text-white'
+                      : 'glass-effect text-slate-600'
                   }`}>
                     {currentStep > step ? (
                       <Check className="w-5 h-5" />
@@ -346,7 +358,7 @@ const BookingPage = () => {
                       <span>{step}</span>
                     )}
                   </div>
-                  <span className="text-xs text-gray-400 mt-2 hidden sm:block">
+                  <span className="text-xs text-slate-500 mt-2 hidden sm:block">
                     {step === 1 && "Service"}
                     {step === 2 && "Therapist"}
                     {step === 3 && "Date & Time"}
@@ -356,9 +368,9 @@ const BookingPage = () => {
                 </div>
               ))}
             </div>
-            <div className="relative h-1 bg-gray-700 mt-5 mb-10 max-w-3xl mx-auto">
+            <div className="relative h-1 bg-slate-200 mt-5 mb-10 max-w-3xl mx-auto">
               <div 
-                className="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full"
+                className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 to-teal-400 rounded-full"
                 style={{ width: `${(currentStep - 1) * 25}%` }}
               ></div>
             </div>
@@ -369,7 +381,7 @@ const BookingPage = () => {
             {/* Step 1: Select Service */}
             {currentStep === 1 && (
               <div>
-                <h2 className="text-2xl font-bold mb-6">Select a Service</h2>
+                <h2 className="text-2xl font-bold mb-6 text-slate-800">Select a Service</h2>
                 <div className="grid md:grid-cols-2 gap-6">
                   {services.map((service) => (
                     <div 
@@ -377,18 +389,18 @@ const BookingPage = () => {
                       onClick={() => setSelectedService(service.id)}
                       className={`rounded-xl p-6 cursor-pointer transition-all duration-300 hover:scale-105 ${
                         selectedService === service.id 
-                          ? 'bg-gradient-to-r from-cyan-900/50 to-purple-900/50 border-2 border-cyan-400' 
-                          : 'glass-effect'
+                          ? 'bg-blue-50 border-2 border-blue-400 shadow-lg' 
+                          : 'glass-effect hover:shadow-md'
                       }`}
                     >
-                      <h3 className="text-xl font-bold mb-2">{service.name}</h3>
-                      <p className="text-gray-400 mb-4">{service.description}</p>
+                      <h3 className="text-xl font-bold mb-2 text-slate-800">{service.name}</h3>
+                      <p className="text-slate-600 mb-4">{service.description}</p>
                       <div className="flex justify-between items-center">
                         <div className="flex items-center">
-                          <Clock className="w-4 h-4 text-cyan-400 mr-2" />
-                          <span className="text-sm">{service.duration}</span>
+                          <Clock className="w-4 h-4 text-blue-500 mr-2" />
+                          <span className="text-sm text-slate-600">{service.duration}</span>
                         </div>
-                        <span className="font-medium text-lg">{service.price}</span>
+                        <span className="font-medium text-lg text-blue-600">{service.price}</span>
                       </div>
                     </div>
                   ))}
@@ -400,8 +412,8 @@ const BookingPage = () => {
                     disabled={!selectedService}
                     className={`px-8 py-3 rounded-lg font-medium flex items-center ${
                       selectedService
-                        ? 'bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400' 
-                        : 'bg-gray-700 cursor-not-allowed'
+                        ? 'bg-gradient-to-r from-blue-500 to-teal-400 hover:from-blue-600 hover:to-teal-500 text-white' 
+                        : 'bg-slate-300 text-slate-500 cursor-not-allowed'
                     }`}
                   >
                     Continue
@@ -414,7 +426,7 @@ const BookingPage = () => {
             {/* Step 2: Select Therapist */}
             {currentStep === 2 && (
               <div>
-                <h2 className="text-2xl font-bold mb-6">Choose Your Therapist</h2>
+                <h2 className="text-2xl font-bold mb-6 text-slate-800">Choose Your Therapist</h2>
                 <div className="grid md:grid-cols-2 gap-6">
                   {therapists.map((therapist) => (
                     <div 
@@ -422,24 +434,24 @@ const BookingPage = () => {
                       onClick={() => setSelectedTherapist(therapist.id)}
                       className={`rounded-xl p-6 cursor-pointer transition-all duration-300 hover:scale-105 ${
                         selectedTherapist === therapist.id 
-                          ? 'bg-gradient-to-r from-cyan-900/50 to-purple-900/50 border-2 border-cyan-400' 
-                          : 'glass-effect'
+                          ? 'bg-blue-50 border-2 border-blue-400 shadow-lg' 
+                          : 'glass-effect hover:shadow-md'
                       }`}
                     >
                       <div className="flex items-center space-x-4">
-                        <div className="w-16 h-16 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center font-bold text-xl">
+                        <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-teal-400 rounded-full flex items-center justify-center font-bold text-xl text-white">
                           {therapist.image}
                         </div>
                         <div>
-                          <h3 className="text-xl font-bold">{therapist.name}</h3>
-                          <p className="text-cyan-400">{therapist.specialty}</p>
+                          <h3 className="text-xl font-bold text-slate-800">{therapist.name}</h3>
+                          <p className="text-blue-600">{therapist.specialty}</p>
                         </div>
                       </div>
                       <div className="mt-4">
-                        <p className="text-sm text-gray-400 mb-2">Available on:</p>
+                        <p className="text-sm text-slate-600 mb-2">Available on:</p>
                         <div className="flex flex-wrap gap-2">
                           {therapist.availability.map((day) => (
-                            <span key={day} className="px-3 py-1 glass-effect text-xs rounded-full">
+                            <span key={day} className="px-3 py-1 bg-white/70 text-xs rounded-full text-slate-700 border border-slate-200">
                               {day}
                             </span>
                           ))}
@@ -452,7 +464,7 @@ const BookingPage = () => {
                 <div className="mt-10 flex justify-between">
                   <button 
                     onClick={prevStep}
-                    className="px-8 py-3 glass-effect rounded-lg font-medium flex items-center hover:bg-white/10"
+                    className="px-8 py-3 glass-effect rounded-lg font-medium flex items-center hover:shadow-md text-slate-700"
                   >
                     <ChevronLeft className="mr-2 w-5 h-5" />
                     Back
@@ -462,8 +474,8 @@ const BookingPage = () => {
                     disabled={!selectedTherapist}
                     className={`px-8 py-3 rounded-lg font-medium flex items-center ${
                       selectedTherapist
-                        ? 'bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400' 
-                        : 'bg-gray-700 cursor-not-allowed'
+                        ? 'bg-gradient-to-r from-blue-500 to-teal-400 hover:from-blue-600 hover:to-teal-500 text-white' 
+                        : 'bg-slate-300 text-slate-500 cursor-not-allowed'
                     }`}
                   >
                     Continue
@@ -476,24 +488,24 @@ const BookingPage = () => {
             {/* Step 3: Select Date and Time */}
             {currentStep === 3 && (
               <div>
-                <h2 className="text-2xl font-bold mb-6">Select Date & Time</h2>
+                <h2 className="text-2xl font-bold mb-6 text-slate-800">Select Date & Time</h2>
                 
                 {/* Calendar */}
                 <div className="mb-8">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-medium">
+                    <h3 className="text-lg font-medium text-slate-700">
                       {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
                     </h3>
                     <div className="flex space-x-2">
                       <button 
                         onClick={handlePrevMonth}
-                        className="p-2 glass-effect rounded-full"
+                        className="p-2 glass-effect rounded-full text-slate-700 hover:shadow-md"
                       >
                         <ChevronLeft className="w-5 h-5" />
                       </button>
                       <button 
                         onClick={handleNextMonth}
-                        className="p-2 glass-effect rounded-full"
+                        className="p-2 glass-effect rounded-full text-slate-700 hover:shadow-md"
                       >
                         <ChevronRight className="w-5 h-5" />
                       </button>
@@ -502,7 +514,7 @@ const BookingPage = () => {
 
                   <div className="grid grid-cols-7 gap-1 mb-2">
                     {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                      <div key={day} className="text-center text-sm text-gray-400 py-2">
+                      <div key={day} className="text-center text-sm text-slate-500 py-2">
                         {day}
                       </div>
                     ))}
@@ -512,10 +524,10 @@ const BookingPage = () => {
                     {calendarDays.map((day, index) => {
                       const dayClass = `
                         p-2 text-center rounded-lg transition-all duration-200
-                        ${isToday(day) ? 'border border-cyan-400' : ''}
-                        ${isSelected(day) ? 'bg-gradient-to-r from-cyan-500 to-purple-500' : ''}
-                        ${!isCurrentMonth(day) ? 'text-gray-600' : 'text-white'}
-                        ${isPastDate(day) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-white/10 cursor-pointer'}
+                        ${isToday(day) ? 'border border-blue-400' : ''}
+                        ${isSelected(day) ? 'bg-gradient-to-r from-blue-500 to-teal-400 text-white' : ''}
+                        ${!isCurrentMonth(day) ? 'text-slate-400' : 'text-slate-700'}
+                        ${isPastDate(day) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-50 cursor-pointer'}
                       `;
                       
                       return (
@@ -535,7 +547,7 @@ const BookingPage = () => {
                 {/* Time Slots */}
                 {selectedDate && (
                   <div>
-                    <h3 className="text-lg font-medium mb-4">
+                    <h3 className="text-lg font-medium mb-4 text-slate-700">
                       Available Times for {formatDate(selectedDate)}
                     </h3>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -545,8 +557,8 @@ const BookingPage = () => {
                           onClick={() => setSelectedTime(time)}
                           className={`p-3 text-center rounded-lg transition-all duration-200 ${
                             selectedTime === time
-                              ? 'bg-gradient-to-r from-cyan-500 to-purple-500'
-                              : 'glass-effect hover:bg-white/10'
+                              ? 'bg-gradient-to-r from-blue-500 to-teal-400 text-white'
+                              : 'glass-effect hover:shadow-md text-slate-700'
                           }`}
                         >
                           {time}
@@ -559,7 +571,7 @@ const BookingPage = () => {
                 <div className="mt-10 flex justify-between">
                   <button 
                     onClick={prevStep}
-                    className="px-8 py-3 glass-effect rounded-lg font-medium flex items-center hover:bg-white/10"
+                    className="px-8 py-3 glass-effect rounded-lg font-medium flex items-center hover:shadow-md text-slate-700"
                   >
                     <ChevronLeft className="mr-2 w-5 h-5" />
                     Back
@@ -569,8 +581,8 @@ const BookingPage = () => {
                     disabled={!selectedDate || !selectedTime}
                     className={`px-8 py-3 rounded-lg font-medium flex items-center ${
                       selectedDate && selectedTime
-                        ? 'bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400' 
-                        : 'bg-gray-700 cursor-not-allowed'
+                        ? 'bg-gradient-to-r from-blue-500 to-teal-400 hover:from-blue-600 hover:to-teal-500 text-white' 
+                        : 'bg-slate-300 text-slate-500 cursor-not-allowed'
                     }`}
                   >
                     Continue
@@ -583,37 +595,37 @@ const BookingPage = () => {
             {/* Step 4: Payment */}
             {currentStep === 4 && (
               <div>
-                <h2 className="text-2xl font-bold mb-6">Payment Information</h2>
+                <h2 className="text-2xl font-bold mb-6 text-slate-800">Payment Information</h2>
                 
                 {/* Booking Summary */}
-                <div className="glass-effect rounded-xl p-6 mb-8">
-                  <h3 className="text-lg font-bold mb-4">Booking Summary</h3>
-                  <div className="space-y-3 text-gray-300">
+                <div className="glass-effect rounded-xl p-6 mb-8 border border-slate-200">
+                  <h3 className="text-lg font-bold mb-4 text-slate-800">Booking Summary</h3>
+                  <div className="space-y-3 text-slate-600">
                     <div className="flex justify-between">
                       <span>Service:</span>
-                      <span className="text-white font-medium">
+                      <span className="text-slate-800 font-medium">
                         {services.find(s => s.id === selectedService)?.name}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span>Therapist:</span>
-                      <span className="text-white font-medium">
+                      <span className="text-slate-800 font-medium">
                         {therapists.find(t => t.id === selectedTherapist)?.name}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span>Date:</span>
-                      <span className="text-white font-medium">
+                      <span className="text-slate-800 font-medium">
                         {selectedDate && formatDate(selectedDate)}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span>Time:</span>
-                      <span className="text-white font-medium">{selectedTime}</span>
+                      <span className="text-slate-800 font-medium">{selectedTime}</span>
                     </div>
-                    <div className="border-t border-gray-600 pt-3 flex justify-between">
+                    <div className="border-t border-slate-200 pt-3 flex justify-between">
                       <span>Total:</span>
-                      <span className="text-cyan-400 font-bold text-lg">
+                      <span className="text-blue-600 font-bold text-lg">
                         {services.find(s => s.id === selectedService)?.price}
                       </span>
                     </div>
@@ -622,131 +634,78 @@ const BookingPage = () => {
                 
                 {/* Payment Options */}
                 <div className="mb-8">
-                  <h3 className="text-lg font-bold mb-4">Payment Method</h3>
-                  <div className="grid sm:grid-cols-3 gap-4">
-                    {['Credit Card', 'Insurance', 'PayPal'].map((method) => (
-                      <button
-                        key={method}
-                        onClick={() => setPaymentMethod(method)}
-                        className={`p-4 rounded-xl text-center transition-all duration-200 ${
-                          paymentMethod === method
-                            ? 'bg-gradient-to-r from-cyan-900/50 to-purple-900/50 border-2 border-cyan-400'
-                            : 'glass-effect hover:bg-white/10'
-                        }`}
-                      >
-                        <CreditCard className="w-6 h-6 mx-auto mb-2" />
-                        <span>{method}</span>
-                      </button>
-                    ))}
+                  <h3 className="text-lg font-bold mb-4 text-slate-800">Payment Method</h3>
+                  <div className="max-w-md mx-auto">
+                    <button
+                      onClick={() => setPaymentMethod('Credit Card')}
+                      className={`w-full p-4 rounded-xl text-center transition-all duration-200 ${
+                        paymentMethod === 'Credit Card'
+                          ? 'bg-blue-50 border-2 border-blue-400 shadow-lg'
+                          : 'glass-effect hover:shadow-md border border-slate-200'
+                      }`}
+                    >
+                      <CreditCard className="w-6 h-6 mx-auto mb-2 text-blue-500" />
+                      <span className="text-slate-700 font-medium">Credit Card</span>
+                    </button>
                   </div>
                 </div>
 
                 {/* Credit Card Form - simplified for demo */}
                 {paymentMethod === 'Credit Card' && (
-                  <div className="glass-effect rounded-xl p-6 mb-8 animate-slide-up">
+                  <div className="glass-effect rounded-xl p-6 mb-8 animate-slide-up border border-slate-200">
                     <div className="grid gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
+                        <label className="block text-sm font-medium text-slate-700 mb-1">
                           Card Number
                         </label>
                         <input
                           type="text"
-                          className="w-full glass-effect rounded-lg px-4 py-3 text-white bg-transparent border border-gray-600 focus:border-cyan-400 focus:outline-none"
+                          className="w-full bg-white/80 rounded-lg px-4 py-3 text-slate-800 border border-slate-300 focus:border-blue-400 focus:ring focus:ring-blue-100 focus:outline-none"
                           placeholder="1234 5678 9012 3456"
                         />
                       </div>
                       
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-1">
+                          <label className="block text-sm font-medium text-slate-700 mb-1">
                             Expiration Date
                           </label>
                           <input
                             type="text"
-                            className="w-full glass-effect rounded-lg px-4 py-3 text-white bg-transparent border border-gray-600 focus:border-cyan-400 focus:outline-none"
+                            className="w-full bg-white/80 rounded-lg px-4 py-3 text-slate-800 border border-slate-300 focus:border-blue-400 focus:ring focus:ring-blue-100 focus:outline-none"
                             placeholder="MM/YY"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-1">
+                          <label className="block text-sm font-medium text-slate-700 mb-1">
                             CVV
                           </label>
                           <input
                             type="text"
-                            className="w-full glass-effect rounded-lg px-4 py-3 text-white bg-transparent border border-gray-600 focus:border-cyan-400 focus:outline-none"
+                            className="w-full bg-white/80 rounded-lg px-4 py-3 text-slate-800 border border-slate-300 focus:border-blue-400 focus:ring focus:ring-blue-100 focus:outline-none"
                             placeholder="123"
                           />
                         </div>
                       </div>
                       
                       <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
+                        <label className="block text-sm font-medium text-slate-700 mb-1">
                           Cardholder Name
                         </label>
                         <input
                           type="text"
-                          className="w-full glass-effect rounded-lg px-4 py-3 text-white bg-transparent border border-gray-600 focus:border-cyan-400 focus:outline-none"
+                          className="w-full bg-white/80 rounded-lg px-4 py-3 text-slate-800 border border-slate-300 focus:border-blue-400 focus:ring focus:ring-blue-100 focus:outline-none"
                           placeholder="John Doe"
                         />
                       </div>
                     </div>
                   </div>
                 )}
-                
-                {/* Insurance Form - simplified for demo */}
-                {paymentMethod === 'Insurance' && (
-                  <div className="glass-effect rounded-xl p-6 mb-8 animate-slide-up">
-                    <div className="grid gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
-                          Insurance Provider
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full glass-effect rounded-lg px-4 py-3 text-white bg-transparent border border-gray-600 focus:border-cyan-400 focus:outline-none"
-                          placeholder="Insurance Company Name"
-                        />
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
-                          Member ID
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full glass-effect rounded-lg px-4 py-3 text-white bg-transparent border border-gray-600 focus:border-cyan-400 focus:outline-none"
-                          placeholder="Member ID Number"
-                        />
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
-                          Group Number
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full glass-effect rounded-lg px-4 py-3 text-white bg-transparent border border-gray-600 focus:border-cyan-400 focus:outline-none"
-                          placeholder="Group Number (if applicable)"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* PayPal - simplified for demo */}
-                {paymentMethod === 'PayPal' && (
-                  <div className="glass-effect rounded-xl p-6 mb-8 text-center animate-slide-up">
-                    <p className="mb-4">You will be redirected to PayPal to complete your payment.</p>
-                    <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium">
-                      Continue to PayPal
-                    </button>
-                  </div>
-                )}
 
                 <div className="mt-10 flex justify-between">
                   <button 
                     onClick={prevStep}
-                    className="px-8 py-3 glass-effect rounded-lg font-medium flex items-center hover:bg-white/10"
+                    className="px-8 py-3 glass-effect rounded-lg font-medium flex items-center hover:shadow-md text-slate-700 border border-slate-200"
                   >
                     <ChevronLeft className="mr-2 w-5 h-5" />
                     Back
@@ -756,8 +715,8 @@ const BookingPage = () => {
                     disabled={!paymentMethod || isConfirmed}
                     className={`px-8 py-3 rounded-lg font-medium flex items-center ${
                       paymentMethod && !isConfirmed
-                        ? 'bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400' 
-                        : 'bg-gray-700 cursor-not-allowed'
+                        ? 'bg-gradient-to-r from-blue-500 to-teal-400 hover:from-blue-600 hover:to-teal-500 text-white' 
+                        : 'bg-slate-300 text-slate-500 cursor-not-allowed'
                     }`}
                   >
                     {isConfirmed ? 'Processing...' : 'Confirm Booking'}
@@ -771,43 +730,43 @@ const BookingPage = () => {
             {currentStep === 5 && (
               <div className="text-center py-6">
                 <div className="w-20 h-20 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Check className="w-10 h-10" />
+                  <Check className="w-10 h-10 text-white" />
                 </div>
-                <h2 className="text-3xl font-bold mb-4">Booking Confirmed!</h2>
-                <p className="text-gray-300 mb-8 max-w-md mx-auto">
+                <h2 className="text-3xl font-bold mb-4 text-slate-800">Booking Confirmed!</h2>
+                <p className="text-slate-600 mb-8 max-w-md mx-auto">
                   Your appointment has been successfully scheduled. We've sent a confirmation email with all the details.
                 </p>
-                <div className="glass-effect rounded-xl p-6 max-w-md mx-auto mb-8">
-                  <h3 className="font-bold mb-4">Appointment Details</h3>
+                <div className="glass-effect rounded-xl p-6 max-w-md mx-auto mb-8 border border-slate-200">
+                  <h3 className="font-bold mb-4 text-slate-800">Appointment Details</h3>
                   <div className="space-y-2 text-left">
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Service:</span>
-                      <span>{services.find(s => s.id === selectedService)?.name}</span>
+                      <span className="text-slate-600">Service:</span>
+                      <span className="text-slate-800 font-medium">{services.find(s => s.id === selectedService)?.name}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Therapist:</span>
-                      <span>{therapists.find(t => t.id === selectedTherapist)?.name}</span>
+                      <span className="text-slate-600">Therapist:</span>
+                      <span className="text-slate-800 font-medium">{therapists.find(t => t.id === selectedTherapist)?.name}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Date:</span>
-                      <span>{selectedDate && formatDate(selectedDate)}</span>
+                      <span className="text-slate-600">Date:</span>
+                      <span className="text-slate-800 font-medium">{selectedDate && formatDate(selectedDate)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Time:</span>
-                      <span>{selectedTime}</span>
+                      <span className="text-slate-600">Time:</span>
+                      <span className="text-slate-800 font-medium">{selectedTime}</span>
                     </div>
                   </div>
                 </div>
                 <div className="space-x-4">
                   <Link 
                     href="/"
-                    className="px-8 py-3 glass-effect rounded-lg font-medium inline-flex items-center hover:bg-white/10"
+                    className="px-8 py-3 glass-effect rounded-lg font-medium inline-flex items-center hover:shadow-md text-slate-700 border border-slate-200"
                   >
                     Return Home
                   </Link>
                   <Link 
                     href="/dashboard"
-                    className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-lg font-medium inline-flex items-center hover:from-cyan-400 hover:to-purple-400"
+                    className="px-8 py-3 bg-gradient-to-r from-blue-500 to-teal-400 rounded-lg font-medium inline-flex items-center hover:from-blue-600 hover:to-teal-500 text-white"
                   >
                     View Appointments
                   </Link>
@@ -821,11 +780,11 @@ const BookingPage = () => {
       {/* Footer - Simplified for booking page */}
       <footer className="py-8">
         <div className="container mx-auto px-6">
-          <div className="text-center text-gray-400 text-sm">
+          <div className="text-center text-slate-500 text-sm">
             <p>&copy; 2024 MyPsychologist. All rights reserved.</p>
             <div className="mt-2">
-              <Link href="/privacy" className="hover:text-white mx-2">Privacy Policy</Link>
-              <Link href="/terms" className="hover:text-white mx-2">Terms of Service</Link>
+              <Link href="/privacy" className="hover:text-blue-600 mx-2">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-blue-600 mx-2">Terms of Service</Link>
             </div>
           </div>
         </div>

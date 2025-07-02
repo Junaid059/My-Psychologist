@@ -318,67 +318,95 @@ const FAQPage = () => {
       {/* FAQ Sections */}
       <section className="py-24 relative">
         <div className="container mx-auto px-6">
-          {faqCategories.map((category, categoryIndex) => (
-            <div key={categoryIndex} className="mb-16">
-              <h2 className="text-3xl font-black mb-8">
-                <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
-                  {category.category}
-                </span>
-              </h2>
-              
-              <div className="space-y-6 max-w-4xl">
-                {category.items.map((item, index) => {
-                  const questionIndex = categoryIndex * 10 + index;
-                  return (
-                    <motion.div
-                      key={questionIndex}
-                      className="gradient-border hover-lift"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <div className="glass-effect rounded-2xl overflow-hidden">
-                        <motion.button
-                          className="w-full text-left px-8 py-6 flex items-center justify-between"
-                          onClick={() => toggleFAQ(questionIndex)}
-                          whileHover={{ scale: 1.01 }}
-                          transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                        >
-                          <h3 className="text-xl font-bold text-slate-700">{item.question}</h3>
-                          <motion.div
-                            animate={{ rotate: activeIndex === questionIndex ? 45 : 0 }}
-                            transition={{ duration: 0.3 }}
+          <div className="max-w-4xl mx-auto">
+            {faqCategories.map((category, categoryIndex) => (
+              <motion.div 
+                key={categoryIndex} 
+                className="mb-16"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: categoryIndex * 0.1, duration: 0.6 }}
+              >
+                <div className="text-center mb-12">
+                  <h2 className="text-3xl md:text-4xl font-black mb-4">
+                    <span className="bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">
+                      {category.category}
+                    </span>
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-teal-400 mx-auto rounded-full"></div>
+                </div>
+                
+                <div className="space-y-4">
+                  {category.items.map((item, index) => {
+                    const questionIndex = categoryIndex * 10 + index;
+                    return (
+                      <motion.div
+                        key={questionIndex}
+                        className="gradient-border hover-lift"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: (categoryIndex * 0.2) + (index * 0.1), duration: 0.5 }}
+                        whileHover={{ scale: 1.02 }}
+                      >
+                        <div className="glass-effect rounded-2xl overflow-hidden border border-slate-200">
+                          <motion.button
+                            className="w-full text-left px-6 md:px-8 py-6 flex items-center justify-between group"
+                            onClick={() => toggleFAQ(questionIndex)}
+                            whileHover={{ backgroundColor: "rgba(59, 130, 246, 0.05)" }}
+                            transition={{ duration: 0.2 }}
                           >
-                            {activeIndex === questionIndex ? (
-                              <Minus className="w-6 h-6 text-blue-500 flex-shrink-0" />
-                            ) : (
-                              <Plus className="w-6 h-6 text-blue-500 flex-shrink-0" />
-                            )}
-                          </motion.div>
-                        </motion.button>
-                        
-                        <AnimatePresence>
-                          {activeIndex === questionIndex && (
+                            <h3 className="text-lg md:text-xl font-bold text-slate-700 group-hover:text-blue-600 transition-colors duration-300 pr-4">
+                              {item.question}
+                            </h3>
                             <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="overflow-hidden"
+                              animate={{ 
+                                rotate: activeIndex === questionIndex ? 180 : 0,
+                                scale: activeIndex === questionIndex ? 1.1 : 1
+                              }}
+                              transition={{ duration: 0.3, type: "spring", stiffness: 200 }}
+                              className="flex-shrink-0"
                             >
-                              <div className="px-8 pb-6 border-t border-slate-200 pt-4">
-                                <p className="text-slate-600 leading-relaxed">{item.answer}</p>
-                              </div>
+                              <ChevronDown className={`w-6 h-6 transition-colors duration-300 ${
+                                activeIndex === questionIndex ? 'text-blue-500' : 'text-slate-400'
+                              }`} />
                             </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+                          </motion.button>
+                          
+                          <AnimatePresence>
+                            {activeIndex === questionIndex && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ 
+                                  duration: 0.4,
+                                  ease: [0.04, 0.62, 0.23, 0.98]
+                                }}
+                                className="overflow-hidden"
+                              >
+                                <motion.div 
+                                  className="px-6 md:px-8 pb-6 border-t border-slate-200"
+                                  initial={{ y: -10, opacity: 0 }}
+                                  animate={{ y: 0, opacity: 1 }}
+                                  transition={{ delay: 0.1, duration: 0.3 }}
+                                >
+                                  <div className="pt-4">
+                                    <p className="text-slate-600 leading-relaxed text-base md:text-lg">
+                                      {item.answer}
+                                    </p>
+                                  </div>
+                                </motion.div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

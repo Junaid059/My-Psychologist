@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Brain, Heart, Shield, Users, Menu, X, ArrowRight, Sparkles, Zap, Clock, MessageCircle, Video, Calendar, Phone, Mail, MapPin, User, BookOpen, Lightbulb, Compass, Smile, Plus, Minus } from 'lucide-react';
+import { ChevronDown, Heart, CheckCircle, Shield, Users, Menu, X, ArrowRight, Sparkles, Zap, Clock, MessageCircle, Video, Calendar, Phone, Mail, MapPin, User, BookOpen, Lightbulb, Compass, Smile, Plus, Minus } from 'lucide-react';
 
 const FAQPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -192,7 +192,7 @@ const FAQPage = () => {
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-teal-400 rounded-xl flex items-center justify-center shadow-md">
-              <Brain className="w-6 h-6 text-white" />
+              <Heart className="w-6 h-6 text-white" />
             </div>
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
               MyPsychologist
@@ -459,7 +459,7 @@ const FAQPage = () => {
             <div className="md:col-span-2">
               <div className="flex items-center space-x-3 mb-6">
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-teal-400 rounded-xl flex items-center justify-center shadow-md">
-                  <Brain className="w-6 h-6 text-white" />
+                  <Heart className="w-6 h-6 text-white" />
                 </div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
                   MyPsychologist

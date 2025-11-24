@@ -1,7 +1,8 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Brain, Menu, X, Calendar, Clock, ChevronLeft, ChevronRight, Check, CreditCard } from 'lucide-react';
+import { Heart, Menu, X, Calendar, Clock, ChevronLeft, ChevronRight, Check, CreditCard, MapPin, Globe } from 'lucide-react';
+import { getLocationWithCache, convertPrice, formatPrice } from '@/lib/geolocation';
 
 const BookingPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,10 +13,30 @@ const BookingPage = () => {
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
   const [isConfirmed, setIsConfirmed] = useState(false);
+  const [location, setLocation] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   // Initialize dates for the calendar
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [calendarDays, setCalendarDays] = useState<Date[]>([]);
+
+  // Get user location on mount
+  useEffect(() => {
+    const initLocation = async () => {
+      try {
+        const loc = await getLocationWithCache();
+        setLocation(loc);
+      } catch (error) {
+        console.error('Error fetching location:', error);
+        // Default to USD if geolocation fails
+        setLocation({ country: 'USA', currency: 'USD', currencySymbol: '$', exchangeRate: 277 });
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    initLocation();
+  }, []);
 
   // Generate calendar days for the current month view
   useEffect(() => {
@@ -51,36 +72,44 @@ const BookingPage = () => {
     setCalendarDays(days);
   }, [currentMonth]);
 
-  const services = [
+  // Service prices in USD (base currency)
+  const baseServices = [
     {
       id: "individual-therapy",
       name: "Individual Therapy",
       description: "One-on-one sessions focused on your specific needs",
       duration: "50 minutes",
-      price: "$150"
+      basePrice: 150
     },
     {
       id: "couples-therapy",
       name: "Couples Therapy",
       description: "Work together to improve your relationship",
       duration: "60 minutes",
-      price: "$200"
+      basePrice: 200
     },
     {
       id: "family-therapy",
       name: "Family Therapy",
       description: "Address challenges affecting the whole family",
       duration: "75 minutes",
-      price: "$250"
+      basePrice: 250
     },
     {
       id: "group-therapy",
       name: "Group Therapy",
       description: "Connect with others facing similar challenges",
       duration: "90 minutes",
-      price: "$75"
+      basePrice: 75
     }
   ];
+
+  // Add dynamic pricing to services based on location
+  const services = baseServices.map(service => ({
+    ...service,
+    price: location ? convertPrice(service.basePrice, location.currency) : service.basePrice,
+    displayPrice: location ? formatPrice(convertPrice(service.basePrice, location.currency), location.currency, location.currencySymbol) : `$${service.basePrice}`
+  }));
 
   const therapists = [
     {
@@ -248,7 +277,7 @@ const BookingPage = () => {
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-teal-400 rounded-xl flex items-center justify-center shadow-md">
-              <Brain className="w-6 h-6 text-white" />
+              <Heart className="w-6 h-6 text-white" />
             </div>
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
               MyPsychologist
@@ -341,6 +370,23 @@ const BookingPage = () => {
               Take the first step toward your mental wellness journey by scheduling an appointment with one of our experienced therapists.
             </p>
           </div>
+
+          {/* Location & Currency Display */}
+          {!loading && location && (
+            <div className="mb-8 flex items-center justify-center">
+              <div className="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-xl px-6 py-3 flex items-center space-x-3 shadow-sm">
+                <MapPin className="w-5 h-5 text-blue-600" />
+                <span className="text-slate-700 font-medium">
+                  {location.country}
+                </span>
+                <span className="text-slate-400">•</span>
+                <Globe className="w-5 h-5 text-teal-600" />
+                <span className="text-slate-700 font-medium">
+                  Prices in {location.currency}
+                </span>
+              </div>
+            </div>
+          )}
           
           {/* Steps Progress */}
           <div className="mb-10">
@@ -400,7 +446,7 @@ const BookingPage = () => {
                           <Clock className="w-4 h-4 text-blue-500 mr-2" />
                           <span className="text-sm text-slate-600">{service.duration}</span>
                         </div>
-                        <span className="font-medium text-lg text-blue-600">{service.price}</span>
+                        <span className="font-medium text-lg text-blue-600">{service.displayPrice}</span>
                       </div>
                     </div>
                   ))}

@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ChevronDown, Brain, Heart, Shield, Users, Star, Check, Menu, X, ArrowRight, Sparkles, Zap, Award, Clock, Target, MessageCircle, Video, Calendar, Phone, Mail, MapPin, User, BookOpen, Lightbulb, Compass, Smile, Activity, Eye, Briefcase, Home, Baby, Puzzle } from 'lucide-react';
+import { ChevronDown, Heart, CheckCircle, Shield, Users, Star, Check, Menu, X, ArrowRight, Sparkles, Zap, Award, Clock, Target, MessageCircle, Video, Calendar, Phone, Mail, MapPin, User, BookOpen, Lightbulb, Compass, Smile, Activity, Eye, Briefcase, Home, Baby, Puzzle } from 'lucide-react';
 
 const ServicesPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -110,7 +110,7 @@ const ServicesPage = () => {
       title: "Cognitive Behavioral Therapy",
       subtitle: "Change Your Thinking",
       description: "Evidence-based approach focusing on identifying and changing negative thought patterns and behaviors.",
-      icon: <Brain className="w-8 h-8" />,
+      icon: <Heart className="w-8 h-8" />,
       gradient: "from-indigo-400 to-blue-600",
       features: [
         "Thought pattern analysis",
@@ -295,7 +295,7 @@ const ServicesPage = () => {
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-teal-400 rounded-xl flex items-center justify-center shadow-md">
-              <Brain className="w-6 h-6 text-white" />
+              <Heart className="w-6 h-6 text-white" />
             </div>
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
               MyPsychologist
@@ -436,45 +436,72 @@ const ServicesPage = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service, index) => (
               <div
                 key={service.id}
-                className="gradient-border hover-lift group cursor-pointer"
+                className="group cursor-pointer h-full"
                 onClick={() => setActiveService(index)}
               >
-                <div className="glass-effect rounded-3xl p-6 h-full relative overflow-hidden">
-                  <div className={`w-16 h-16 bg-gradient-to-r ${service.gradient} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    {service.icon}
-                  </div>
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg p-6 h-full transition-all duration-300 hover:-translate-y-2 overflow-hidden relative">
+                  {/* Gradient accent bar at top */}
+                  <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${service.gradient}`}></div>
                   
-                  <h3 className="text-xl font-bold mb-2 text-slate-700">{service.title}</h3>
-                  <p className="text-blue-500 text-sm font-medium mb-3">{service.subtitle}</p>
-                  <p className="text-slate-600 text-sm mb-4 line-clamp-3">{service.description}</p>
-                  
-                  <div className="flex items-center justify-between text-sm text-slate-500 mb-4">
-                    <div className="flex items-center">
-                      <Clock className="w-4 h-4 mr-1" />
-                      {service.duration}
+                  {/* Icon with background */}
+                  <div className="mb-4">
+                    <div className={`w-14 h-14 bg-gradient-to-r ${service.gradient} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 text-white shadow-md`}>
+                      {service.icon}
                     </div>
-                    <div className="font-medium text-blue-500">{service.price}</div>
                   </div>
                   
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {service.specialties.slice(0, 3).map((specialty, i) => (
-                      <span key={i} className="px-2 py-1 bg-blue-50 rounded-full text-xs text-slate-600 border border-blue-100">
+                  {/* Content */}
+                  <h3 className="text-2xl font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">{service.title}</h3>
+                  <p className="text-blue-500 text-sm font-semibold mb-3 uppercase tracking-wide">{service.subtitle}</p>
+                  <p className="text-slate-600 text-sm mb-5 leading-relaxed">{service.description}</p>
+                  
+                  {/* Features highlight */}
+                  <div className="space-y-2 mb-5 pb-5 border-b border-slate-100">
+                    {service.features.slice(0, 2).map((feature, i) => (
+                      <div key={i} className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-teal-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm text-slate-600">{feature}</span>
+                      </div>
+                    ))}
+                    {service.features.length > 2 && (
+                      <p className="text-xs text-slate-500 mt-2">+ {service.features.length - 2} more features</p>
+                    )}
+                  </div>
+                  
+                  {/* Footer */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-1">
+                      <Clock className="w-4 h-4 text-slate-400" />
+                      <span className="text-sm text-slate-600 font-medium">{service.duration}</span>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-slate-500">Starting at</p>
+                      <p className="text-lg font-bold text-blue-600">{service.price}</p>
+                    </div>
+                  </div>
+                  
+                  {/* Specialties */}
+                  <div className="flex flex-wrap gap-1.5 mb-5">
+                    {service.specialties.slice(0, 2).map((specialty, i) => (
+                      <span key={i} className="px-2.5 py-1 bg-gradient-to-r from-blue-50 to-teal-50 rounded-full text-xs font-medium text-slate-700 border border-blue-100">
                         {specialty}
                       </span>
                     ))}
-                    {service.specialties.length > 3 && (
-                      <span className="px-2 py-1 bg-blue-50 rounded-full text-xs text-slate-600 border border-blue-100">
-                        +{service.specialties.length - 3}
+                    {service.specialties.length > 2 && (
+                      <span className="px-2.5 py-1 bg-slate-100 rounded-full text-xs font-medium text-slate-600 border border-slate-200">
+                        +{service.specialties.length - 2} more
                       </span>
                     )}
                   </div>
                   
-                  <button className="w-full py-2 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all duration-300 text-sm font-medium border border-blue-200 text-blue-600">
-                    Learn More
+                  {/* Button */}
+                  <button className="w-full py-3 bg-gradient-to-r from-blue-500 to-teal-500 rounded-xl hover:from-blue-600 hover:to-teal-600 transition-all duration-300 text-white font-semibold flex items-center justify-center gap-2 group/btn">
+                    Explore Service
+                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                   </button>
                 </div>
               </div>
@@ -496,62 +523,69 @@ const ServicesPage = () => {
               </button>
               
               {services[activeService] && (
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div>
-                    <div className={`w-20 h-20 bg-gradient-to-r ${services[activeService].gradient} rounded-2xl flex items-center justify-center mb-6`}>
+                <div className="space-y-8">
+                  {/* Header */}
+                  <div className="flex items-start gap-6 pb-6 border-b border-slate-200">
+                    <div className={`w-20 h-20 bg-gradient-to-r ${services[activeService].gradient} rounded-2xl flex items-center justify-center text-white flex-shrink-0 shadow-lg`}>
                       {services[activeService].icon}
                     </div>
-                    
-                    <h3 className="text-3xl font-bold mb-2 text-slate-700">{services[activeService].title}</h3>
-                    <p className="text-blue-500 text-lg font-medium mb-4">{services[activeService].subtitle}</p>
-                    <p className="text-slate-600 mb-6 leading-relaxed">{services[activeService].description}</p>
-                    
-                    <div className="grid grid-cols-2 gap-4 mb-6">
-                      <div className="glass-effect rounded-xl p-4">
-                        <div className="flex items-center mb-2">
-                          <Clock className="w-5 h-5 mr-2 text-blue-500" />
-                          <span className="font-medium text-slate-700">Duration</span>
-                        </div>
-                        <p className="text-slate-600">{services[activeService].duration}</p>
-                      </div>
-                      <div className="glass-effect rounded-xl p-4">
-                        <div className="flex items-center mb-2">
-                          <Target className="w-5 h-5 mr-2 text-teal-500" />
-                          <span className="font-medium text-slate-700">Price</span>
-                        </div>
-                        <p className="text-slate-600">{services[activeService].price}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex gap-3">
-                      <button className="flex-1 py-3 bg-gradient-to-r from-blue-500 to-teal-400 rounded-xl hover:from-blue-600 hover:to-teal-500 transition-all duration-300 text-white font-bold">
-                        Book Session
-                      </button>
-                      <button className="px-6 py-3 glass-effect rounded-xl hover:bg-white/50 transition-all duration-300 border border-slate-200 text-slate-700">
-                        <MessageCircle className="w-5 h-5" />
-                      </button>
+                    <div>
+                      <h2 className="text-4xl font-black text-slate-800 mb-2">{services[activeService].title}</h2>
+                      <p className="text-lg text-blue-600 font-semibold mb-2">{services[activeService].subtitle}</p>
+                      <p className="text-slate-600 text-lg">{services[activeService].description}</p>
                     </div>
                   </div>
-                  
+
+                  {/* Key Details */}
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div className="bg-gradient-to-br from-blue-50 to-teal-50 rounded-xl p-6 border border-blue-100">
+                      <p className="text-sm text-slate-600 mb-1">Session Duration</p>
+                      <p className="text-2xl font-bold text-blue-600">{services[activeService].duration}</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100">
+                      <p className="text-sm text-slate-600 mb-1">Starting Price</p>
+                      <p className="text-2xl font-bold text-green-600">{services[activeService].price}</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-6 border border-purple-100">
+                      <p className="text-sm text-slate-600 mb-1">Specialties</p>
+                      <p className="text-2xl font-bold text-purple-600">{services[activeService].specialties.length}</p>
+                    </div>
+                  </div>
+
+                  {/* Features */}
                   <div>
-                    <h4 className="text-xl font-bold mb-4">What's Included</h4>
-                    <ul className="space-y-3 mb-6">
+                    <h3 className="text-2xl font-bold text-slate-800 mb-6">What's Included</h3>
+                    <div className="grid md:grid-cols-2 gap-4">
                       {services[activeService].features.map((feature, i) => (
-                        <li key={i} className="flex items-center">
-                          <Check className="w-5 h-5 text-emerald-400 mr-3 flex-shrink-0" />
-                          <span className="text-slate-600">{feature}</span>
-                        </li>
+                        <div key={i} className="flex items-start gap-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                          <Check className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
+                          <span className="text-slate-700 font-medium">{feature}</span>
+                        </div>
                       ))}
-                    </ul>
-                    
-                    <h4 className="text-xl font-bold mb-4">Specializations</h4>
-                    <div className="flex flex-wrap gap-2">
+                    </div>
+                  </div>
+
+                  {/* Specialties */}
+                  <div>
+                    <h3 className="text-2xl font-bold text-slate-800 mb-6">Specializations</h3>
+                    <div className="flex flex-wrap gap-3">
                       {services[activeService].specialties.map((specialty, i) => (
-                        <span key={i} className="px-3 py-2 bg-blue-50 rounded-lg text-sm border border-blue-100 text-slate-600">
+                        <span key={i} className="px-4 py-2 bg-gradient-to-r from-blue-100 to-teal-100 rounded-full text-slate-700 font-medium border border-blue-200">
                           {specialty}
                         </span>
                       ))}
                     </div>
+                  </div>
+
+                  {/* CTA */}
+                  <div className="flex gap-4 pt-6">
+                    <Link href="/booking" className="flex-1 py-4 bg-gradient-to-r from-blue-500 to-teal-500 rounded-xl hover:from-blue-600 hover:to-teal-600 transition-all duration-300 text-white font-bold text-center text-lg">
+                      Book Session Now
+                    </Link>
+                    <button className="px-8 py-4 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors duration-300 border border-slate-300 text-slate-700 font-semibold flex items-center gap-2">
+                      <MessageCircle className="w-5 h-5" />
+                      Questions?
+                    </button>
                   </div>
                 </div>
               )}
@@ -578,24 +612,22 @@ const ServicesPage = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {sessionFormats.map((format, index) => (
-              <div key={index} className="gradient-border hover-lift">
-                <div className="glass-effect rounded-3xl p-6 text-center h-full">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-teal-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    {format.icon}
-                  </div>
-                  <h3 className="text-xl font-bold mb-3 text-slate-700">{format.title}</h3>
-                  <p className="text-slate-600 mb-6">{format.description}</p>
-                  <ul className="space-y-2">
-                    {format.features.map((feature, i) => (
-                      <li key={i} className="flex items-center justify-center text-sm text-slate-600">
-                        <Check className="w-4 h-4 text-emerald-400 mr-2" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
+              <div key={index} className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg p-8 text-center h-full transition-all duration-300 hover:-translate-y-2 group">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-teal-400 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white shadow-md group-hover:scale-110 transition-transform duration-300">
+                  {format.icon}
                 </div>
+                <h3 className="text-2xl font-bold mb-3 text-slate-800">{format.title}</h3>
+                <p className="text-slate-600 mb-6 leading-relaxed">{format.description}</p>
+                <ul className="space-y-3">
+                  {format.features.map((feature, i) => (
+                    <li key={i} className="flex items-center justify-center text-sm text-slate-700 font-medium">
+                      <Check className="w-4 h-4 text-emerald-500 mr-2 flex-shrink-0" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
@@ -701,7 +733,7 @@ const ServicesPage = () => {
             <div className="md:col-span-2">
               <div className="flex items-center space-x-3 mb-6">
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-teal-400 rounded-xl flex items-center justify-center shadow-md">
-                  <Brain className="w-6 h-6 text-white" />
+                  <Heart className="w-6 h-6 text-white" />
                 </div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
                   MyPsychologist

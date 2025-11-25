@@ -1,18 +1,44 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ChevronDown, Heart, CheckCircle, Shield, Users, Star, Check, Menu, X, ArrowRight, Sparkles, Zap, Award } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { ChevronDown, Heart, CheckCircle, Shield, Users, Star, Check, Menu, X, ArrowRight, Sparkles, Zap, Award, User as UserIcon, LogOut, Settings } from 'lucide-react';
 
 const MyPsychologist = () => {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    // Check if user is logged in
+    const userToken = localStorage.getItem('userToken') || localStorage.getItem('user_token');
+    const userData = localStorage.getItem('user') || localStorage.getItem('user_data');
+    if (userToken && userData) {
+      setIsLoggedIn(true);
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('user_token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('user_data');
+    setIsLoggedIn(false);
+    setUser(null);
+    setShowProfileDropdown(false);
+    router.push('/');
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -220,6 +246,35 @@ const MyPsychologist = () => {
             <Link href="/service" className="text-slate-600 hover:text-slate-800 transition-all duration-300 hover:scale-105 font-medium">
               Services
             </Link>
+            
+            {/* Resources Dropdown */}
+            <div className="relative group">
+              <button className="text-slate-600 hover:text-slate-800 transition-all duration-300 hover:scale-105 font-medium flex items-center gap-1">
+                Resources
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 py-2">
+                <Link href="/exercises" className="block px-4 py-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 transition-all">
+                  🏃 Exercises
+                </Link>
+                <Link href="/meditation" className="block px-4 py-2 text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 transition-all">
+                  🎵 Meditation
+                </Link>
+                <Link href="/pomodoro" className="block px-4 py-2 text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">
+                  🍅 Pomodoro Timer
+                </Link>
+                <Link href="/mood-journal" className="block px-4 py-2 text-slate-600 hover:text-teal-600 hover:bg-teal-50 transition-all">
+                  📊 Mood Journal
+                </Link>
+                <Link href="/resources" className="block px-4 py-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 transition-all">
+                  📚 Articles
+                </Link>
+                <Link href="/announcements" className="block px-4 py-2 text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 transition-all">
+                  📢 Announcements
+                </Link>
+              </div>
+            </div>
+
             <Link href="/faq" className="text-slate-600 hover:text-slate-800 transition-all duration-300 hover:scale-105 font-medium">
               FAQ
             </Link>
@@ -232,12 +287,74 @@ const MyPsychologist = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
-            <Link href="/login" className="px-6 py-2 text-slate-600 hover:text-slate-800 transition-all duration-300 font-medium">
-              Login
-            </Link>
-            <Link href="/booking" className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full hover:from-blue-400 hover:to-cyan-400 transition-all duration-300 hover:scale-105 hover:shadow-lg font-medium">
-              Book Session
-            </Link>
+            {isLoggedIn && user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-full hover:from-blue-100 hover:to-cyan-100 transition-all duration-300"
+                >
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                    {user.firstName?.charAt(0)}{user.lastName?.charAt(0)}
+                  </div>
+                  <span className="font-medium text-slate-700">{user.firstName}</span>
+                  <ChevronDown className={`w-4 h-4 text-slate-600 transition-transform ${showProfileDropdown ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {showProfileDropdown && (
+                  <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-xl shadow-xl py-2 z-50">
+                    <div className="px-4 py-3 border-b border-slate-100">
+                      <p className="font-semibold text-slate-800">{user.firstName} {user.lastName}</p>
+                      <p className="text-xs text-slate-500">{user.email}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setShowProfileDropdown(false);
+                        router.push('/user/dashboard');
+                      }}
+                      className="w-full text-left px-4 py-2 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all flex items-center gap-2"
+                    >
+                      <UserIcon className="w-4 h-4" />
+                      Dashboard
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowProfileDropdown(false);
+                        router.push('/pomodoro');
+                      }}
+                      className="w-full text-left px-4 py-2 text-slate-600 hover:bg-sky-50 hover:text-sky-600 transition-all flex items-center gap-2"
+                    >
+                      🍅 Pomodoro Timer
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowProfileDropdown(false);
+                        router.push('/mood-journal');
+                      }}
+                      className="w-full text-left px-4 py-2 text-slate-600 hover:bg-teal-50 hover:text-teal-600 transition-all flex items-center gap-2"
+                    >
+                      📊 Mood Journal
+                    </button>
+                    <div className="border-t border-slate-100 my-2"></div>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-all flex items-center gap-2"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link href="/login" className="px-6 py-2 text-slate-600 hover:text-slate-800 transition-all duration-300 font-medium">
+                  Login
+                </Link>
+                <Link href="/booking" className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full hover:from-blue-400 hover:to-cyan-400 transition-all duration-300 hover:scale-105 hover:shadow-lg font-medium text-white">
+                  Book Session
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -261,6 +378,30 @@ const MyPsychologist = () => {
             <Link href="/service" className="block py-3 text-slate-600 hover:text-slate-800 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
               Services
             </Link>
+            
+            {/* Mobile Resources Section */}
+            <div className="py-3">
+              <p className="text-slate-400 text-xs font-bold uppercase mb-2">Resources</p>
+              <Link href="/exercises" className="block py-2 pl-4 text-slate-600 hover:text-blue-600 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+                🏃 Exercises
+              </Link>
+              <Link href="/meditation" className="block py-2 pl-4 text-slate-600 hover:text-cyan-600 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+                🎵 Meditation
+              </Link>
+              <Link href="/pomodoro" className="block py-2 pl-4 text-slate-600 hover:text-sky-600 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+                🍅 Pomodoro Timer
+              </Link>
+              <Link href="/mood-journal" className="block py-2 pl-4 text-slate-600 hover:text-teal-600 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+                📊 Mood Journal
+              </Link>
+              <Link href="/resources" className="block py-2 pl-4 text-slate-600 hover:text-blue-600 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+                📚 Articles
+              </Link>
+              <Link href="/announcements" className="block py-2 pl-4 text-slate-600 hover:text-cyan-600 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
+                📢 Announcements
+              </Link>
+            </div>
+            
             <Link href="/faq" className="block py-3 text-slate-600 hover:text-slate-800 transition-all duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>
               FAQ
             </Link>

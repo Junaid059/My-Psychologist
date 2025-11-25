@@ -5,9 +5,6 @@ import { comparePassword, generateToken, isValidEmail } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
-    await initializeMongoDatabase();
-    const db = await getDatabase();
-
     const body = await request.json();
     const { email, password } = body;
 
@@ -26,8 +23,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Find user
+    // Initialize MongoDB
+    await initializeMongoDatabase();
+    const db = await getDatabase();
+
+    // Find user in MongoDB
     const user = await db.collection('users').findOne({ email });
+    
     if (!user) {
       return NextResponse.json(
         { error: 'User not found' },
@@ -52,19 +54,40 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate token
-    const token = generateToken({ id: (user._id as any).toString(), email: user.email as string, userType: 'user' });
+    const token = generateToken({ 
+      id: user._id.toString(), 
+      email: user.email,
+      userType: 'user' 
+    });
+
+    // Update last login
+    await db.collection('users').updateOne(
+      { _id: user._id },
+      { 
+        $set: { 
+          lastLogin: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        } 
+      }
+    );
 
     return NextResponse.json(
       {
         message: 'Login successful',
         user: {
-          id: (user._id as any).toString(),
+          id: user._id.toString(),
           email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          phone: user.phone,
-          country: user.country,
-          currency: user.currency
+          firstName: user.firstName || '',
+          lastName: user.lastName || '',
+          phone: user.phone || '',
+          country: user.country || '',
+          currency: user.currency || 'USD',
+          avatar: user.avatar || null,
+          age: user.age || null,
+          location: user.location || '',
+          language: user.language || 'English',
+          bio: user.bio || '',
+          emergencyContact: user.emergencyContact || '',
         },
         token
       },

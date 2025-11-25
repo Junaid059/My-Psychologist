@@ -16,6 +16,8 @@ export function initializeDatabase() {
   db.createTable('bookings');
   db.createTable('admin_users');
   db.createTable('sessions');
+  db.createTable('pomodoro_sessions');
+  db.createTable('mood_entries');
 
   // Insert default services if none exist
   const existingServices = db.find('services');
@@ -97,6 +99,36 @@ export function initializeDatabase() {
       updatedAt: new Date().toISOString()
     });
   }
+
+  // Create default test user if none exist
+  const existingUsers = db.find('users');
+  if (existingUsers.length === 0) {
+    const userEmail = 'user@test.com';
+    const userPassword = 'password123';
+    const hashedPassword = hashPassword(userPassword);
+
+    db.insert('users', {
+      id: 'user_001',
+      email: userEmail,
+      password: hashedPassword,
+      firstName: 'Test',
+      lastName: 'User',
+      phone: '+1234567890',
+      country: 'USA',
+      currency: 'USD',
+      avatar: null,
+      age: 25,
+      location: 'New York, USA',
+      language: 'English',
+      bio: 'Test user account for demonstration',
+      emergencyContact: '+1987654321',
+      isActive: true,
+      createdAt: new Date().toISOString(),
+      lastLogin: null
+    });
+    
+    console.log(`✅ Created test user: ${userEmail} / ${userPassword}`);
+  }
 }
 
 // Database helper functions with better method names
@@ -130,5 +162,8 @@ export const database = {
   findAppointmentById: (id: string) => db.findOne('appointments', (a) => a.id === id),
   findBookingById: (id: string) => db.findOne('bookings', (b) => b.id === id)
 };
+
+// Initialize database on module load
+initializeDatabase();
 
 export default db;

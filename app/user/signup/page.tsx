@@ -75,8 +75,8 @@ const UserSignup = () => {
       localStorage.setItem('userToken', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      // Redirect to user dashboard or home
-      router.push('/user/dashboard');
+      // Redirect to homepage
+      router.push('/');
     } catch (err) {
       setError('Network error. Please try again.');
       console.error('Signup error:', err);

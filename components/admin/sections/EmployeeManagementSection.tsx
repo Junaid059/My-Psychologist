@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Search, Edit2, Trash2, Eye, Plus, X, Loader, CheckCircle, AlertCircle, DollarSign, Briefcase, Star } from 'lucide-react';
+import Modal from '@/components/ui/modal';
 
 interface Employee {
   _id: string;
@@ -391,182 +392,198 @@ const EmployeeManagementSection = () => {
       </div>
 
       {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center p-6 border-b border-slate-200">
-              <h3 className="text-xl font-bold text-slate-800">
-                {modalMode === 'create' && 'Create New Employee'}
-                {modalMode === 'edit' && 'Edit Employee'}
-                {modalMode === 'view' && 'Employee Details'}
-              </h3>
-              <button onClick={() => setShowModal(false)} className="p-2 hover:bg-slate-100 rounded-lg transition">
-                <X className="w-5 h-5" />
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title={
+          modalMode === 'create' ? '👨‍⚕️ Add New Therapist' :
+          modalMode === 'edit' ? '✏️ Edit Therapist' :
+          '👤 Therapist Details'
+        }
+        maxWidth="2xl"
+      >
+        {modalMode === 'view' && selectedEmployee ? (
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-6">
+              <div className="bg-gradient-to-br from-blue-50 to-teal-50 p-5 rounded-xl">
+                <label className="text-sm font-bold text-slate-600 uppercase tracking-wide">Name</label>
+                <p className="text-xl font-semibold text-slate-900 mt-2">{selectedEmployee.firstName} {selectedEmployee.lastName}</p>
+              </div>
+              <div className="bg-gradient-to-br from-blue-50 to-teal-50 p-5 rounded-xl">
+                <label className="text-sm font-bold text-slate-600 uppercase tracking-wide">Email</label>
+                <p className="text-lg font-medium text-slate-900 mt-2">{selectedEmployee.email}</p>
+              </div>
+              <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-5 rounded-xl">
+                <label className="text-sm font-bold text-slate-600 uppercase tracking-wide">Specialization</label>
+                <p className="text-lg font-medium text-slate-900 mt-2">{selectedEmployee.specialization || 'General'}</p>
+              </div>
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-5 rounded-xl">
+                <label className="text-sm font-bold text-slate-600 uppercase tracking-wide">Experience</label>
+                <p className="text-lg font-medium text-slate-900 mt-2">{selectedEmployee.experience || 0} years</p>
+              </div>
+              <div className="bg-gradient-to-br from-yellow-50 to-orange-50 p-5 rounded-xl">
+                <label className="text-sm font-bold text-slate-600 uppercase tracking-wide">Salary</label>
+                <p className="text-xl font-bold text-green-600 mt-2">${(selectedEmployee.salary || 0).toLocaleString()}</p>
+              </div>
+              <div className="bg-gradient-to-br from-slate-50 to-slate-100 p-5 rounded-xl">
+                <label className="text-sm font-bold text-slate-600 uppercase tracking-wide">Status</label>
+                <p className="text-lg font-medium mt-2">
+                  <span className={`px-4 py-2 rounded-full text-sm font-bold ${selectedEmployee.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                    {selectedEmployee.isActive ? '✓ Active' : '✗ Inactive'}
+                  </span>
+                </p>
+              </div>
+            </div>
+            {selectedEmployee.phone && (
+              <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-5 rounded-xl">
+                <label className="text-sm font-bold text-slate-600 uppercase tracking-wide">Phone</label>
+                <p className="text-lg font-medium text-slate-900 mt-2">{selectedEmployee.phone}</p>
+              </div>
+            )}
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-2">First Name *</label>
+                <input
+                  type="text"
+                  value={formData.firstName}
+                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                  placeholder="John"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-2">Last Name *</label>
+                <input
+                  type="text"
+                  value={formData.lastName}
+                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                  placeholder="Doe"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-slate-700 mb-2">Email Address *</label>
+              <input
+                type="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                placeholder="therapist@clinic.com"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-slate-700 mb-2">
+                Password {modalMode === 'edit' && <span className="text-slate-500 text-xs font-normal">(leave blank to keep unchanged)</span>}
+              </label>
+              <input
+                type="password"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                placeholder="••••••••"
+                required={modalMode === 'create'}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-slate-700 mb-2">Phone Number</label>
+              <input
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                placeholder="+1 (555) 123-4567"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-slate-700 mb-2">Specialization *</label>
+              <select
+                value={formData.specialization}
+                onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                required
+              >
+                <option value="">Select Specialization</option>
+                <option value="Clinical Psychology">Clinical Psychology</option>
+                <option value="Cognitive Behavioral Therapy">Cognitive Behavioral Therapy (CBT)</option>
+                <option value="Family Therapy">Family Therapy</option>
+                <option value="Child Psychology">Child Psychology</option>
+                <option value="Addiction Counseling">Addiction Counseling</option>
+                <option value="Trauma Therapy">Trauma Therapy</option>
+                <option value="Marriage Counseling">Marriage Counseling</option>
+                <option value="General Therapy">General Therapy</option>
+              </select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-2">Experience (years) *</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={formData.experience}
+                  onChange={(e) => setFormData({ ...formData, experience: parseInt(e.target.value) || 0 })}
+                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                  placeholder="5"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-2">Monthly Salary ($) *</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={formData.salary}
+                  onChange={(e) => setFormData({ ...formData, salary: parseInt(e.target.value) || 0 })}
+                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                  placeholder="5000"
+                  required
+                />
+              </div>
+            </div>
+
+            {error && (
+              <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded-lg text-red-700 text-sm flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
+
+            {success && (
+              <div className="p-4 bg-green-50 border-l-4 border-green-500 rounded-lg text-green-700 text-sm flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                <span>{success}</span>
+              </div>
+            )}
+
+            <div className="flex gap-3 pt-4">
+              <button
+                type="submit"
+                className="flex-1 px-6 py-3.5 bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.02]"
+              >
+                {modalMode === 'create' ? '✨ Add Therapist' : '💾 Update Therapist'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowModal(false)}
+                className="px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-all"
+              >
+                Cancel
               </button>
             </div>
-
-            <div className="p-6">
-              {modalMode === 'view' && selectedEmployee ? (
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium text-slate-600">Name</label>
-                    <p className="text-lg text-slate-900">{selectedEmployee.firstName} {selectedEmployee.lastName}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-600">Email</label>
-                    <p className="text-lg text-slate-900">{selectedEmployee.email}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-600">Phone</label>
-                    <p className="text-lg text-slate-900">{selectedEmployee.phone || 'N/A'}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-600">Specialization</label>
-                    <p className="text-lg text-slate-900">{selectedEmployee.specialization}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-600">Experience</label>
-                    <p className="text-lg text-slate-900">{selectedEmployee.experience} years</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-600">Salary</label>
-                    <p className="text-lg text-slate-900">${selectedEmployee.salary.toLocaleString()}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-600">Status</label>
-                    <p className="text-lg text-slate-900">{selectedEmployee.isActive ? 'Active' : 'Inactive'}</p>
-                  </div>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">First Name *</label>
-                      <input
-                        type="text"
-                        value={formData.firstName}
-                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">Last Name *</label>
-                      <input
-                        type="text"
-                        value={formData.lastName}
-                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Email *</label>
-                    <input
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Password {modalMode === 'edit' && '(leave blank to keep unchanged)'}
-                    </label>
-                    <input
-                      type="password"
-                      value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required={modalMode === 'create'}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Phone</label>
-                    <input
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Specialization *</label>
-                    <input
-                      type="text"
-                      value={formData.specialization}
-                      onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                      placeholder="e.g. Clinical Psychology, CBT, etc."
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">Experience (years) *</label>
-                      <input
-                        type="number"
-                        value={formData.experience}
-                        onChange={(e) => setFormData({ ...formData, experience: parseInt(e.target.value) || 0 })}
-                        className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                        min="0"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">Salary ($) *</label>
-                      <input
-                        type="number"
-                        value={formData.salary}
-                        onChange={(e) => setFormData({ ...formData, salary: parseInt(e.target.value) || 0 })}
-                        className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                        min="0"
-                      />
-                    </div>
-                  </div>
-
-                  {error && (
-                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-                      {error}
-                    </div>
-                  )}
-
-                  {success && (
-                    <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4" />
-                      {success}
-                    </div>
-                  )}
-
-                  <div className="flex gap-3 pt-4">
-                    <button
-                      type="submit"
-                      className="flex-1 px-6 py-2.5 bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white rounded-lg font-medium transition"
-                    >
-                      {modalMode === 'create' ? 'Create Employee' : 'Update Employee'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setShowModal(false)}
-                      className="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+          </form>
+        )}
+      </Modal>
     </div>
   );
 };

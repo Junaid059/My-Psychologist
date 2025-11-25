@@ -1,119 +1,389 @@
-# Platform URLs & Feature Reference
+# 🔐 LOGIN CREDENTIALS & URLS# 🔐 LOGIN FIXED - USE /login NOT /user/login# Platform URLs & Feature Reference
 
-## 🏠 Public Pages
 
-| Page | URL | Description |
-|------|-----|-------------|
-| Homepage | `http://localhost:3000/` | Landing page with services overview |
-| Services | `http://localhost:3000/service` | Detailed therapy services |
+
+## ✅ FIXED: Login Now Uses MongoDB
+
+
+
+Your user account works now! The login was looking in the wrong database.## ✅ QUICK FIX SUMMARY## 🏠 Public Pages
+
+
+
+---
+
+
+
+## 🔑 YOUR LOGIN CREDENTIALS### What Was Wrong:| Page | URL | Description |
+
+
+
+### 👤 Your Account (MongoDB)- ❌ You were accessing `/user/login` (old page)|------|-----|-------------|
+
+```
+
+URL:      http://localhost:3000/login- ❌ No test user existed in database| Homepage | `http://localhost:3000/` | Landing page with services overview |
+
+Email:    junaid@gmail.com
+
+Password: (the password you used during signup)- ❌ Database wasn't initializing automatically| Services | `http://localhost:3000/service` | Detailed therapy services |
+
+```
+
 | About | `http://localhost:3000/about` | Company info and team |
-| FAQ | `http://localhost:3000/faq` | Frequently asked questions |
-| Contact | `http://localhost:3000/contact` | Contact form and information |
-| **Booking** | `http://localhost:3000/booking` | **NEW: Geolocation-based booking** |
+
+### 🔧 Test User (Legacy - In-Memory)
+
+```### What's Fixed:| FAQ | `http://localhost:3000/faq` | Frequently asked questions |
+
+URL:      http://localhost:3000/login
+
+Email:    user@test.com- ✅ `/user/login` now redirects to `/login`| Contact | `http://localhost:3000/contact` | Contact form and information |
+
+Password: password123
+
+```- ✅ Test user auto-created: `user@test.com / password123`| **Booking** | `http://localhost:3000/booking` | **NEW: Geolocation-based booking** |
+
+
+
+### 👨‍💼 Admin Account (MongoDB)- ✅ Database initializes on server start
+
+```
+
+URL:      http://localhost:3000/login- ✅ Admin user exists: `admin@mypsychologist.com / admin123`---
+
+Email:    admin@mypsychologist.com
+
+Password: admin123
+
+```
+
+---## 🔐 Authentication
 
 ---
 
-## 🔐 Authentication
 
-| Page | URL | Purpose |
+
+## 📍 CORRECT LOGIN URL
+
+## 🔑 LOGIN CREDENTIALS| Page | URL | Purpose |
+
+**Always use:**
+
+```|------|-----|---------|
+
+http://localhost:3000/login
+
+```### Test User (Regular User)| Login | `http://localhost:3000/login` | Unified login for admin & users |
+
+
+
+**NOT:**```| Admin Login | `http://localhost:3000/admin/login` | Admin-specific login |
+
+```
+
+http://localhost:3000/user/login  ← Redirects to /login nowURL:      http://localhost:3000/login
+
+```
+
+Email:    user@test.com### Test Credentials:
+
+---
+
+Password: password123```
+
+## 🚀 HOW TO LOGIN
+
+```Admin:
+
+1. **Go to:** `http://localhost:3000/login`
+
+2. **Enter:** `junaid@gmail.com` + your password  Email: admin@mypsychologist.com
+
+3. **Click:** "Login" button
+
+4. **Result:** ### Admin User  Password: admin123
+
+   - ✅ Redirected to homepage
+
+   - ✅ Profile icon appears in navbar```
+
+   - ✅ Click icon → See "Dashboard"
+
+   - ✅ Your data now saves!URL:      http://localhost:3000/loginUser:
+
+
+
+---Email:    admin@mypsychologist.com  Email: user@mypsychologist.com
+
+
+
+## 🔧 WHAT WAS FIXEDPassword: admin123  Password: user123
+
+
+
+### The Problem:``````
+
+- ❌ Login API used in-memory database (psychologist.json)
+
+- ❌ Signup API used MongoDB
+
+- ❌ User `junaid@gmail.com` was in MongoDB
+
+- ❌ Login couldn't find it → "User not found" error------
+
+
+
+### The Solution:
+
+- ✅ Changed login API to use MongoDB
+
+- ✅ Now queries the same database as signup## 📍 CORRECT URL## 👨‍💼 Admin Dashboard Pages
+
+- ✅ Your user account now works!
+
+
+
+---
+
+**Always use:**| Page | URL | Features |
+
+## 🏗️ PLATFORM URLS
+
+```|------|-----|----------|
+
+### 🏠 Public Pages
+
+| Page | URL | Description |http://localhost:3000/login| Dashboard Home | `http://localhost:3000/admin/dashboard` | Overview & stats |
+
+|------|-----|-------------|
+
+| Homepage | `http://localhost:3000/` | Landing page |```| Users | `http://localhost:3000/admin/dashboard?section=users` | User management |
+
+| Services | `http://localhost:3000/service` | Therapy services |
+
+| About | `http://localhost:3000/about` | Company info || Bookings | `http://localhost:3000/admin/dashboard?section=bookings` | Booking management |
+
+| FAQ | `http://localhost:3000/faq` | FAQs |
+
+| Contact | `http://localhost:3000/contact` | Contact form |**NOT:**| Appointments | `http://localhost:3000/admin/dashboard?section=appointments` | Appointment tracking |
+
+| Booking | `http://localhost:3000/booking` | Session booking |
+
+```| Therapists | `http://localhost:3000/admin/dashboard?section=therapists` | Therapist profiles |
+
+### 🔐 Authentication
+
+| Page | URL | Purpose |http://localhost:3000/user/login  ← This redirects to /login now| Revenue | `http://localhost:3000/admin/dashboard?section=revenue` | General revenue analytics |
+
 |------|-----|---------|
-| Login | `http://localhost:3000/login` | Unified login for admin & users |
-| Admin Login | `http://localhost:3000/admin/login` | Admin-specific login |
 
-### Test Credentials:
-```
-Admin:
-  Email: admin@mypsychologist.com
-  Password: admin123
+| **Login** | `http://localhost:3000/login` | **Unified login (use this!)** |```| **Revenue by Type** | `http://localhost:3000/admin/dashboard?section=therapyRevenue` | **NEW: Breakdown by therapy categories** |
 
-User:
-  Email: user@mypsychologist.com
-  Password: user123
-```
+| Signup | `http://localhost:3000/user/signup` | Create account |
 
----
-
-## 👨‍💼 Admin Dashboard Pages
-
-| Page | URL | Features |
-|------|-----|----------|
-| Dashboard Home | `http://localhost:3000/admin/dashboard` | Overview & stats |
-| Users | `http://localhost:3000/admin/dashboard?section=users` | User management |
-| Bookings | `http://localhost:3000/admin/dashboard?section=bookings` | Booking management |
-| Appointments | `http://localhost:3000/admin/dashboard?section=appointments` | Appointment tracking |
-| Therapists | `http://localhost:3000/admin/dashboard?section=therapists` | Therapist profiles |
-| Revenue | `http://localhost:3000/admin/dashboard?section=revenue` | General revenue analytics |
-| **Revenue by Type** | `http://localhost:3000/admin/dashboard?section=therapyRevenue` | **NEW: Breakdown by therapy categories** |
 | **Employees** | `http://localhost:3000/admin/dashboard?section=employees` | **NEW: Salary & staff management** |
-| **Appointment Mgmt** | `http://localhost:3000/admin/dashboard?section=appointmentMgmt` | **NEW: Advanced scheduling** |
-| Reports | `http://localhost:3000/admin/dashboard?section=reports` | Reports & analytics |
+
+### 👤 User Features (After Login)
+
+| Feature | URL | Description |---| **Appointment Mgmt** | `http://localhost:3000/admin/dashboard?section=appointmentMgmt` | **NEW: Advanced scheduling** |
+
+|---------|-----|-------------|
+
+| Dashboard | `http://localhost:3000/user/profile` | User profile & stats || Reports | `http://localhost:3000/admin/dashboard?section=reports` | Reports & analytics |
+
+| Pomodoro | `http://localhost:3000/pomodoro` | Focus timer (saves data) |
+
+| Mood Journal | `http://localhost:3000/mood-journal` | Track emotions (saves data) |## 🚀 HOW TO LOGIN
+
+| Meditation | `http://localhost:3000/meditation` | Meditation exercises |
+
+| Resources | `http://localhost:3000/resources` | Mental health resources |---
+
+| Exercises | `http://localhost:3000/exercises` | Therapeutic exercises |
+
+1. **Go to:** `http://localhost:3000/login`
+
+### 👨‍💼 Admin Dashboard (Admin Login Only)
+
+| Page | URL |2. **Enter:** `user@test.com` / `password123`## 🎯 Key New Features
+
+|------|-----|
+
+| Dashboard | `http://localhost:3000/admin/dashboard` |3. **Click:** "Login" button
+
+
+
+---4. **Result:** ### 1. Geolocation-Based Booking
+
+
+
+## 📊 DATABASE INFO   - ✅ Redirected to homepage- **URL**: `http://localhost:3000/booking`
+
+
+
+**MongoDB** (Primary Database):   - ✅ Profile icon appears in navbar- **Features**:
+
+- Users collection: Contains `junaid@gmail.com`
+
+- Admin users: Contains `admin@mypsychologist.com`   - ✅ Click icon → See "Dashboard"  - Automatic country detection (Pakistan/USA)
+
+- Services, appointments, bookings, etc.
+
+   - ✅ Your data now saves!  - Dynamic currency display (PKR/USD)
+
+**In-Memory Database** (psychologist.json):
+
+- Guest mode data (Pomodoro, Mood Journal)  - Price conversion (1 USD = 277 PKR)
+
+- Legacy test user (user@test.com)
+
+---  - Location indicator at top
 
 ---
 
-## 🎯 Key New Features
-
-### 1. Geolocation-Based Booking
-- **URL**: `http://localhost:3000/booking`
-- **Features**:
-  - Automatic country detection (Pakistan/USA)
-  - Dynamic currency display (PKR/USD)
-  - Price conversion (1 USD = 277 PKR)
-  - Location indicator at top
   - Service prices update based on location
-  
-### 2. Revenue by Therapy Categories
-- **URL**: Admin Dashboard → Sidebar → "Revenue by Type"
-- **Features**:
-  - Revenue breakdown by therapy type
-  - Bar chart: Revenue comparison
-  - Pie chart: Distribution %
-  - Line chart: 6-month trend
-  - Detailed breakdown table
-  
+
+## ✅ TESTING CHECKLIST
+
+## 🔧 FILES CHANGED  
+
+- [x] Login with junaid@gmail.com
+
+- [ ] See profile icon in navbar### 2. Revenue by Therapy Categories
+
+- [ ] Click profile → See "Dashboard"
+
+- [ ] Use Pomodoro → Data saves1. **`app/user/login/page.tsx`**- **URL**: Admin Dashboard → Sidebar → "Revenue by Type"
+
+- [ ] Use Mood Journal → Data saves
+
+- [ ] Go to Dashboard → See stats   - Changed from full login form to redirect component- **Features**:
+
+
+
+---   - Automatically sends users to `/login`  - Revenue breakdown by therapy type
+
+
+
+## 🔍 TROUBLESHOOTING  - Bar chart: Revenue comparison
+
+
+
+### "User not found" error:2. **`lib/db.ts`**  - Pie chart: Distribution %
+
+- ✅ **FIXED!** Login now uses MongoDB
+
+- Make sure you use: `junaid@gmail.com`   - Added test user creation  - Line chart: 6-month trend
+
+- Use the password from signup
+
+   - Added auto-initialization  - Detailed breakdown table
+
+### Can't remember password:
+
+- Use signup to create new account   - Runs `initializeDatabase()` on module load  
+
+- Or use test account: `user@test.com / password123`
+
 ### 3. Employee Management
-- **URL**: Admin Dashboard → Sidebar → "Employees"
+
+### Wrong URL:
+
+- Use: `http://localhost:3000/login`---- **URL**: Admin Dashboard → Sidebar → "Employees"
+
+- NOT: `http://localhost:3000/user/login`
+
 - **Features**:
-  - Add/Edit/Delete employees
+
+---
+
+## ⚡ RESTART YOUR SERVER  - Add/Edit/Delete employees
+
+**BOOKMARK THIS:** `http://localhost:3000/login`
+
   - Salary and bonus tracking
-  - Payment status monitoring
-  - Salary distribution chart
-  - Employee statistics
-  
-### 4. Appointment Management
-- **URL**: Admin Dashboard → Sidebar → "Appointment Mgmt"
+
+**YOUR CREDENTIALS:** `junaid@gmail.com` + (your password)
+
+To apply changes:  - Payment status monitoring
+
+```bash  - Salary distribution chart
+
+# Stop server (Ctrl+C)  - Employee statistics
+
+# Then restart:  
+
+npm run dev### 4. Appointment Management
+
+```- **URL**: Admin Dashboard → Sidebar → "Appointment Mgmt"
+
 - **Features**:
-  - Schedule appointments
+
+Database will auto-create with test user!  - Schedule appointments
+
   - Track appointment status
-  - Change status: Scheduled → Completed/Cancelled/No-Show
+
+---  - Change status: Scheduled → Completed/Cancelled/No-Show
+
   - Client phone number display
-  - Session notes
+
+## ✅ WHAT TO TEST  - Session notes
+
   - Completion rate analytics
 
----
+1. **Go to old URL:**
 
-## 📊 Dashboard Sections (Admin)
+   ```---
+
+   http://localhost:3000/user/login
+
+   ```## 📊 Dashboard Sections (Admin)
+
+   **Should:** Auto-redirect to `/login`
 
 ### Overview (Home)
-- Total Users, Bookings, Appointments
-- Recent bookings & activities
-- Key metrics cards
 
-### Users
-- User list with details
+2. **Login with test user:**- Total Users, Bookings, Appointments
+
+   ```- Recent bookings & activities
+
+   Email: user@test.com- Key metrics cards
+
+   Password: password123
+
+   ```### Users
+
+   **Should:** Work and redirect to homepage- User list with details
+
 - Search/filter functionality
-- User information table
+
+3. **Check navbar:**- User information table
+
+   **Should:** See profile icon with your initials
 
 ### Bookings
-- Upcoming bookings
-- Booking history
-- Client information
-- Booking status
 
-### Appointments (Old)
+4. **Use features:**- Upcoming bookings
+
+   - Pomodoro saves sessions ✅- Booking history
+
+   - Mood journal saves entries ✅- Client information
+
+   - Dashboard shows stats ✅- Booking status
+
+
+
+---### Appointments (Old)
+
 - Quick appointment view
-- Appointment list
 
-### Therapists
+**BOOKMARK THIS:** `http://localhost:3000/login`- Appointment list
+
+
+
+**TEST CREDENTIALS:** `user@test.com` / `password123`### Therapists
+
 - Therapist profiles
 - Specializations
 - Availability

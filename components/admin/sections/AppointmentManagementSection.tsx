@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Search, Edit2, Trash2, Plus, X, Loader, CheckCircle, AlertCircle, Calendar, Clock, User } from 'lucide-react';
+import Modal from '@/components/ui/modal';
 
 interface Appointment {
   _id: string;
@@ -204,6 +205,30 @@ const AppointmentManagementSection = () => {
     }
   };
 
+  const updateAppointmentStatus = async (appointmentId: string, newStatus: string) => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`/api/admin/appointments/${appointmentId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status: newStatus })
+      });
+
+      if (response.ok) {
+        setSuccess(`Appointment ${newStatus}!`);
+        fetchAppointments();
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError('Failed to update status');
+      }
+    } catch (err) {
+      setError('Network error');
+    }
+  };
+
   const handleDelete = async (appointmentId: string) => {
     if (!confirm('Delete this appointment?')) return;
 
@@ -351,6 +376,35 @@ const AppointmentManagementSection = () => {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
+                        {apt.status === 'scheduled' && (
+                          <>
+                            <button
+                              onClick={() => updateAppointmentStatus(apt._id, 'completed')}
+                              className="px-3 py-1.5 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg text-xs font-medium transition flex items-center gap-1"
+                              title="Mark as Completed"
+                            >
+                              <CheckCircle className="w-3.5 h-3.5" />
+                              Complete
+                            </button>
+                            <button
+                              onClick={() => updateAppointmentStatus(apt._id, 'cancelled')}
+                              className="px-3 py-1.5 bg-red-50 text-red-700 hover:bg-red-100 rounded-lg text-xs font-medium transition flex items-center gap-1"
+                              title="Cancel Appointment"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                              Cancel
+                            </button>
+                          </>
+                        )}
+                        {apt.status === 'cancelled' && (
+                          <button
+                            onClick={() => updateAppointmentStatus(apt._id, 'scheduled')}
+                            className="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs font-medium transition"
+                            title="Reschedule"
+                          >
+                            Reschedule
+                          </button>
+                        )}
                         <button
                           onClick={() => handleEdit(apt)}
                           className="p-2 text-teal-600 hover:bg-teal-50 rounded-lg transition"
@@ -394,152 +448,144 @@ const AppointmentManagementSection = () => {
         </div>
       </div>
 
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center p-6 border-b border-slate-200">
-              <h3 className="text-xl font-bold text-slate-800">
-                {modalMode === 'create' ? 'New Appointment' : 'Edit Appointment'}
-              </h3>
-              <button onClick={() => setShowModal(false)} className="p-2 hover:bg-slate-100 rounded-lg">
-                <X className="w-5 h-5" />
-              </button>
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title={modalMode === 'create' ? '📅 New Appointment' : '✏️ Edit Appointment'}
+        maxWidth="2xl"
+      >
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="grid grid-cols-1 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Client *</label>
+              <select
+                value={formData.userId}
+                onChange={(e) => setFormData({ ...formData, userId: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                required
+              >
+                <option value="">Select a client</option>
+                {users.map((user) => (
+                  <option key={user._id} value={user._id}>
+                    {user.firstName} {user.lastName} - {user.email}
+                  </option>
+                ))}
+              </select>
             </div>
 
-            <div className="p-6">
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Client *</label>
-                    <select
-                      value={formData.userId}
-                      onChange={(e) => setFormData({ ...formData, userId: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    >
-                      <option value="">Select a client</option>
-                      {users.map((user) => (
-                        <option key={user._id} value={user._id}>
-                          {user.firstName} {user.lastName} - {user.email}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Therapist *</label>
+              <select
+                value={formData.employeeId}
+                onChange={(e) => setFormData({ ...formData, employeeId: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                required
+              >
+                <option value="">Select a therapist</option>
+                {employees.map((emp) => (
+                  <option key={emp._id} value={emp._id}>
+                    {emp.firstName} {emp.lastName} - {emp.specialization || 'General'}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Therapist *</label>
-                    <select
-                      value={formData.employeeId}
-                      onChange={(e) => setFormData({ ...formData, employeeId: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    >
-                      <option value="">Select a therapist</option>
-                      {employees.map((emp) => (
-                        <option key={emp._id} value={emp._id}>
-                          {emp.firstName} {emp.lastName} - {emp.specialization || 'General'}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Service *</label>
-                    <select
-                      value={formData.serviceId}
-                      onChange={(e) => setFormData({ ...formData, serviceId: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    >
-                      <option value="">Select a service</option>
-                      {services.map((service) => (
-                        <option key={service._id} value={service._id}>
-                          {service.name} - ${service.price}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Date *</label>
-                    <input
-                      type="date"
-                      value={formData.appointmentDate}
-                      onChange={(e) => setFormData({ ...formData, appointmentDate: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Time *</label>
-                    <input
-                      type="time"
-                      value={formData.appointmentTime}
-                      onChange={(e) => setFormData({ ...formData, appointmentTime: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Status</label>
-                  <select
-                    value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="scheduled">Scheduled</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Notes</label>
-                  <textarea
-                    value={formData.notes}
-                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    rows={3}
-                  />
-                </div>
-
-                {error && (
-                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-                    {error}
-                  </div>
-                )}
-
-                {success && (
-                  <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4" />
-                    {success}
-                  </div>
-                )}
-
-                <div className="flex gap-3 pt-4">
-                  <button
-                    type="submit"
-                    className="flex-1 px-6 py-2.5 bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white rounded-lg font-medium"
-                  >
-                    {modalMode === 'create' ? 'Create' : 'Update'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                    className="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Service *</label>
+              <select
+                value={formData.serviceId}
+                onChange={(e) => setFormData({ ...formData, serviceId: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                required
+              >
+                <option value="">Select a service</option>
+                {services.map((service) => (
+                  <option key={service._id} value={service._id}>
+                    {service.name} - ${service.price}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
-        </div>
-      )}
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Appointment Date *</label>
+              <input
+                type="date"
+                value={formData.appointmentDate}
+                onChange={(e) => setFormData({ ...formData, appointmentDate: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Time *</label>
+              <input
+                type="time"
+                value={formData.appointmentTime}
+                onChange={(e) => setFormData({ ...formData, appointmentTime: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-2">Status</label>
+            <select
+              value={formData.status}
+              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+            >
+              <option value="scheduled">📅 Scheduled</option>
+              <option value="completed">✅ Completed</option>
+              <option value="cancelled">❌ Cancelled</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-2">Notes</label>
+            <textarea
+              value={formData.notes}
+              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+              rows={3}
+              placeholder="Add any special notes or requirements..."
+            />
+          </div>
+
+          {error && (
+            <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded-lg text-red-700 text-sm flex items-center gap-2">
+              <AlertCircle className="w-5 h-5 flex-shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          {success && (
+            <div className="p-4 bg-green-50 border-l-4 border-green-500 rounded-lg text-green-700 text-sm flex items-center gap-2">
+              <CheckCircle className="w-5 h-5 flex-shrink-0" />
+              <span>{success}</span>
+            </div>
+          )}
+
+          <div className="flex gap-3 pt-4">
+            <button
+              type="submit"
+              className="flex-1 px-6 py-3.5 bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.02]"
+            >
+              {modalMode === 'create' ? '✨ Create Appointment' : '💾 Update Appointment'}
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowModal(false)}
+              className="px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-all"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };

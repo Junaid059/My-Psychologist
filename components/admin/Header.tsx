@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { Menu, Bell, Settings, LogOut, User, ChevronDown } from 'lucide-react';
+import NotificationCenter from './NotificationCenter';
 
 interface HeaderProps {
   sidebarOpen: boolean;
@@ -31,10 +32,7 @@ const Header: React.FC<HeaderProps> = ({
       {/* Right side */}
       <div className="flex items-center gap-4">
         {/* Notifications */}
-        <button className="relative p-2 hover:bg-slate-100 rounded-lg transition">
-          <Bell className="w-5 h-5 text-slate-600" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-        </button>
+        <NotificationCenter />
 
         {/* Settings */}
         <button className="p-2 hover:bg-slate-100 rounded-lg transition">

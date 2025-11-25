@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Search, Edit2, Trash2, Eye, Mail, Phone, Calendar, Plus, X, Loader, CheckCircle, AlertCircle, UserPlus } from 'lucide-react';
+import Modal from '@/components/ui/modal';
 
 interface User {
   _id: string;
@@ -32,7 +33,8 @@ const UsersSection = () => {
     phone: '',
     password: '',
     country: '',
-    currency: 'USD'
+    currency: 'USD',
+    userType: 'patient' // 'patient' or 'therapist'
   });
 
   // Fetch users
@@ -83,7 +85,8 @@ const UsersSection = () => {
       phone: '',
       password: '',
       country: '',
-      currency: 'USD'
+      currency: 'USD',
+      userType: 'patient'
     });
     setShowModal(true);
     setError('');
@@ -100,7 +103,8 @@ const UsersSection = () => {
       phone: user.phone || '',
       password: '',
       country: user.country || '',
-      currency: user.currency || 'USD'
+      currency: user.currency || 'USD',
+      userType: 'patient'
     });
     setShowModal(true);
     setError('');
@@ -121,23 +125,53 @@ const UsersSection = () => {
 
     try {
       if (modalMode === 'create') {
-        // Create new user
-        const response = await fetch('/api/auth/user/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
-        });
+        // Create new user - Route to different API based on userType
+        if (formData.userType === 'therapist') {
+          // Create as therapist/employee
+          const token = localStorage.getItem('adminToken');
+          const response = await fetch('/api/admin/employees', {
+            method: 'POST',
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              ...formData,
+              specialization: 'General Therapy',
+              experience: 0,
+              salary: 0
+            })
+          });
 
-        const data = await response.json();
-        if (response.ok) {
-          setSuccess('User created successfully!');
-          fetchUsers();
-          setTimeout(() => {
-            setShowModal(false);
-            setSuccess('');
-          }, 2000);
+          const data = await response.json();
+          if (response.ok) {
+            setSuccess('Therapist created successfully!');
+            setTimeout(() => {
+              setShowModal(false);
+              setSuccess('');
+            }, 2000);
+          } else {
+            setError(data.error || 'Failed to create therapist');
+          }
         } else {
-          setError(data.error || 'Failed to create user');
+          // Create as patient/regular user
+          const response = await fetch('/api/auth/user/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+          });
+
+          const data = await response.json();
+          if (response.ok) {
+            setSuccess('Patient created successfully!');
+            fetchUsers();
+            setTimeout(() => {
+              setShowModal(false);
+              setSuccess('');
+            }, 2000);
+          } else {
+            setError(data.error || 'Failed to create patient');
+          }
         }
       } else if (modalMode === 'edit' && selectedUser) {
         // Update user
@@ -379,175 +413,192 @@ const UsersSection = () => {
       </div>
 
       {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="flex justify-between items-center p-6 border-b border-slate-200">
-              <h3 className="text-xl font-bold text-slate-800">
-                {modalMode === 'create' && 'Create New User'}
-                {modalMode === 'edit' && 'Edit User'}
-                {modalMode === 'view' && 'User Details'}
-              </h3>
-              <button
-                onClick={() => setShowModal(false)}
-                className="p-2 hover:bg-slate-100 rounded-lg transition"
-              >
-                <X className="w-5 h-5" />
-              </button>
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title={
+          modalMode === 'create' ? '✨ Create New User' :
+          modalMode === 'edit' ? '✏️ Edit User' :
+          '👤 User Details'
+        }
+        maxWidth="2xl"
+      >
+        {modalMode === 'view' && selectedUser ? (
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-6">
+              <div className="bg-gradient-to-br from-blue-50 to-teal-50 p-4 rounded-xl">
+                <label className="text-sm font-semibold text-slate-600 uppercase tracking-wide">Name</label>
+                <p className="text-lg font-medium text-slate-900 mt-1">{selectedUser.firstName} {selectedUser.lastName}</p>
+              </div>
+              <div className="bg-gradient-to-br from-blue-50 to-teal-50 p-4 rounded-xl">
+                <label className="text-sm font-semibold text-slate-600 uppercase tracking-wide">Email</label>
+                <p className="text-lg font-medium text-slate-900 mt-1">{selectedUser.email}</p>
+              </div>
+              <div className="bg-gradient-to-br from-blue-50 to-teal-50 p-4 rounded-xl">
+                <label className="text-sm font-semibold text-slate-600 uppercase tracking-wide">Phone</label>
+                <p className="text-lg font-medium text-slate-900 mt-1">{selectedUser.phone || 'N/A'}</p>
+              </div>
+              <div className="bg-gradient-to-br from-blue-50 to-teal-50 p-4 rounded-xl">
+                <label className="text-sm font-semibold text-slate-600 uppercase tracking-wide">Country</label>
+                <p className="text-lg font-medium text-slate-900 mt-1">{selectedUser.country || 'N/A'}</p>
+              </div>
+              <div className="bg-gradient-to-br from-blue-50 to-teal-50 p-4 rounded-xl">
+                <label className="text-sm font-semibold text-slate-600 uppercase tracking-wide">Currency</label>
+                <p className="text-lg font-medium text-slate-900 mt-1">{selectedUser.currency || 'N/A'}</p>
+              </div>
+              <div className="bg-gradient-to-br from-blue-50 to-teal-50 p-4 rounded-xl">
+                <label className="text-sm font-semibold text-slate-600 uppercase tracking-wide">Status</label>
+                <p className="text-lg font-medium text-slate-900 mt-1">
+                  <span className={`px-3 py-1 rounded-full text-sm ${selectedUser.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                    {selectedUser.isActive ? '✓ Active' : '✗ Inactive'}
+                  </span>
+                </p>
+              </div>
             </div>
-
-            {/* Modal Content */}
-            <div className="p-6">
-              {modalMode === 'view' && selectedUser ? (
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium text-slate-600">Name</label>
-                    <p className="text-lg text-slate-900">{selectedUser.firstName} {selectedUser.lastName}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-600">Email</label>
-                    <p className="text-lg text-slate-900">{selectedUser.email}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-600">Phone</label>
-                    <p className="text-lg text-slate-900">{selectedUser.phone || 'N/A'}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-600">Country</label>
-                    <p className="text-lg text-slate-900">{selectedUser.country || 'N/A'}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-600">Currency</label>
-                    <p className="text-lg text-slate-900">{selectedUser.currency || 'N/A'}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-600">Status</label>
-                    <p className="text-lg text-slate-900">{selectedUser.isActive ? 'Active' : 'Inactive'}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-600">Joined</label>
-                    <p className="text-lg text-slate-900">{new Date(selectedUser.createdAt).toLocaleString()}</p>
-                  </div>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">First Name *</label>
-                      <input
-                        type="text"
-                        value={formData.firstName}
-                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">Last Name *</label>
-                      <input
-                        type="text"
-                        value={formData.lastName}
-                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Email *</label>
-                    <input
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Password {modalMode === 'edit' && '(leave blank to keep unchanged)'}
-                    </label>
-                    <input
-                      type="password"
-                      value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required={modalMode === 'create'}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Phone</label>
-                    <input
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">Country</label>
-                      <input
-                        type="text"
-                        value={formData.country}
-                        onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">Currency</label>
-                      <select
-                        value={formData.currency}
-                        onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="USD">USD</option>
-                        <option value="PKR">PKR</option>
-                        <option value="EUR">EUR</option>
-                        <option value="GBP">GBP</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {error && (
-                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-                      {error}
-                    </div>
-                  )}
-
-                  {success && (
-                    <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4" />
-                      {success}
-                    </div>
-                  )}
-
-                  <div className="flex gap-3 pt-4">
-                    <button
-                      type="submit"
-                      className="flex-1 px-6 py-2.5 bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white rounded-lg font-medium transition"
-                    >
-                      {modalMode === 'create' ? 'Create User' : 'Update User'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setShowModal(false)}
-                      className="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-              )}
+            <div className="bg-gradient-to-br from-slate-50 to-slate-100 p-4 rounded-xl">
+              <label className="text-sm font-semibold text-slate-600 uppercase tracking-wide">Member Since</label>
+              <p className="text-lg font-medium text-slate-900 mt-1">{new Date(selectedUser.createdAt).toLocaleString()}</p>
             </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {modalMode === 'create' && (
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-2">User Type *</label>
+                <select
+                  value={formData.userType}
+                  onChange={(e) => setFormData({ ...formData, userType: e.target.value })}
+                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                >
+                  <option value="patient">🏥 Patient (Regular User)</option>
+                  <option value="therapist">👨‍⚕️ Therapist (Employee)</option>
+                </select>
+                <p className="text-xs text-slate-500 mt-1">
+                  {formData.userType === 'patient' ? 'Patient can book appointments' : 'Therapist can provide services'}
+                </p>
+              </div>
+            )}
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">First Name *</label>
+                <input
+                  type="text"
+                  value={formData.firstName}
+                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                  placeholder="John"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name *</label>
+                <input
+                  type="text"
+                  value={formData.lastName}
+                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                  placeholder="Doe"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Email Address *</label>
+              <input
+                type="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                placeholder="john.doe@example.com"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Password {modalMode === 'edit' && <span className="text-slate-500 text-xs">(leave blank to keep unchanged)</span>}
+              </label>
+              <input
+                type="password"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                placeholder="••••••••"
+                required={modalMode === 'create'}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Phone Number</label>
+              <input
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                placeholder="+1 (555) 123-4567"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Country</label>
+                <input
+                  type="text"
+                  value={formData.country}
+                  onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                  placeholder="United States"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Currency</label>
+                <select
+                  value={formData.currency}
+                  onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
+                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                >
+                  <option value="USD">USD ($)</option>
+                  <option value="PKR">PKR (₨)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="GBP">GBP (£)</option>
+                </select>
+              </div>
+            </div>
+
+            {error && (
+              <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded-lg text-red-700 text-sm flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
+
+            {success && (
+              <div className="p-4 bg-green-50 border-l-4 border-green-500 rounded-lg text-green-700 text-sm flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                <span>{success}</span>
+              </div>
+            )}
+
+            <div className="flex gap-3 pt-4">
+              <button
+                type="submit"
+                className="flex-1 px-6 py-3.5 bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.02]"
+              >
+                {modalMode === 'create' ? '✨ Create User' : '💾 Update User'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowModal(false)}
+                className="px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-all"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
+      </Modal>
     </div>
   );
 };

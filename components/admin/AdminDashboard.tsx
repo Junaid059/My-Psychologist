@@ -8,14 +8,20 @@ import DashboardHome from './sections/DashboardHome';
 import UsersSection from './sections/UsersSection';
 import BookingsSection from './sections/BookingsSection';
 import AppointmentsSection from './sections/AppointmentsSection';
-import TherapistsSection from './sections/TherapistsSection';
 import RevenueAnalyticsSection from './sections/RevenueAnalyticsSection';
 import ReportsSection from './sections/ReportsSection';
 import TherapyCategoryRevenueSection from './sections/TherapyCategoryRevenueSection';
 import EmployeeManagementSection from './sections/EmployeeManagementSection';
 import AppointmentManagementSection from './sections/AppointmentManagementSection';
+import SessionManagementSection from './sections/SessionManagementSection';
+import FinancialDashboard from './sections/FinancialDashboard';
+import AnalyticsDashboard from './sections/AnalyticsDashboard';
+import GlobalSettingsSection from './sections/GlobalSettingsSection';
+import ContentManagementSection from './sections/ContentManagementSection';
+import ModerationSection from './sections/ModerationSection';
+import AnnouncementCenter from './sections/AnnouncementCenter';
 
-type Section = 'home' | 'users' | 'bookings' | 'appointments' | 'therapists' | 'revenue' | 'reports' | 'therapyRevenue' | 'employees' | 'appointmentMgmt';
+type Section = 'home' | 'users' | 'bookings' | 'appointments' | 'therapists' | 'revenue' | 'reports' | 'therapyRevenue' | 'appointmentMgmt' | 'sessions' | 'financial' | 'analytics' | 'globalSettings' | 'content' | 'moderation' | 'announcements';
 
 const AdminDashboard = () => {
   const router = useRouter();
@@ -36,15 +42,27 @@ const AdminDashboard = () => {
       case 'appointments':
         return <AppointmentsSection />;
       case 'therapists':
-        return <TherapistsSection />;
+        return <EmployeeManagementSection />;
       case 'revenue':
         return <RevenueAnalyticsSection />;
       case 'therapyRevenue':
         return <TherapyCategoryRevenueSection />;
-      case 'employees':
-        return <EmployeeManagementSection />;
       case 'appointmentMgmt':
         return <AppointmentManagementSection />;
+      case 'sessions':
+        return <SessionManagementSection />;
+      case 'financial':
+        return <FinancialDashboard />;
+      case 'analytics':
+        return <AnalyticsDashboard />;
+      case 'globalSettings':
+        return <GlobalSettingsSection />;
+      case 'content':
+        return <ContentManagementSection />;
+      case 'moderation':
+        return <ModerationSection />;
+      case 'announcements':
+        return <AnnouncementCenter />;
       case 'reports':
         return <ReportsSection />;
       default:

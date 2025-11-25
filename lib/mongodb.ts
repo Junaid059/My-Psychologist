@@ -153,6 +153,22 @@ export async function initializeMongoDatabase() {
     await db.collection('sessions').createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 });
   }
 
+  // 8. Pomodoro sessions collection
+  if (!collectionNames.includes('pomodoro_sessions')) {
+    await db.createCollection('pomodoro_sessions');
+    await db.collection('pomodoro_sessions').createIndex({ userId: 1 });
+    await db.collection('pomodoro_sessions').createIndex({ completedAt: -1 });
+    await db.collection('pomodoro_sessions').createIndex({ mode: 1 });
+  }
+
+  // 9. Mood entries collection
+  if (!collectionNames.includes('mood_entries')) {
+    await db.createCollection('mood_entries');
+    await db.collection('mood_entries').createIndex({ userId: 1 });
+    await db.collection('mood_entries').createIndex({ date: -1 });
+    await db.collection('mood_entries').createIndex({ id: 1 }, { unique: true });
+  }
+
   console.log('✅ MongoDB database initialized with all collections');
   return db;
 }

@@ -98,7 +98,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { appointmentDate, startTime, endTime, status, notes, meetingLink, videoSessionRecording } = body;
+    const { appointmentDate, startTime, endTime, status, notes, meetingLink, videoSessionRecording, cancellationReason, refundStatus, refundAmount } = body;
 
     const now = new Date();
 
@@ -111,6 +111,9 @@ export async function PUT(
     if (notes !== undefined) updateData.notes = notes;
     if (meetingLink !== undefined) updateData.meetingLink = meetingLink;
     if (videoSessionRecording !== undefined) updateData.videoSessionRecording = videoSessionRecording;
+    if (cancellationReason !== undefined) updateData.cancellationReason = cancellationReason;
+    if (refundStatus !== undefined) updateData.refundStatus = refundStatus;
+    if (refundAmount !== undefined) updateData.refundAmount = refundAmount;
 
     // Update appointment
     await db.collection('appointments').updateOne(

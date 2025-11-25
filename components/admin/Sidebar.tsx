@@ -1,8 +1,8 @@
 'use client'
 import React from 'react';
-import { LayoutDashboard, Users, Calendar, Clock, LogOut, Heart, Stethoscope, TrendingUp, FileText, DollarSign, Briefcase } from 'lucide-react';
+import { LayoutDashboard, Users, Calendar, Clock, LogOut, Heart, Stethoscope, TrendingUp, FileText, DollarSign, Briefcase, CalendarCheck, CreditCard, BarChart3, Settings, BookOpen, MessageSquare, Bell } from 'lucide-react';
 
-type Section = 'home' | 'users' | 'bookings' | 'appointments' | 'therapists' | 'revenue' | 'reports' | 'therapyRevenue' | 'employees' | 'appointmentMgmt';
+type Section = 'home' | 'users' | 'bookings' | 'appointments' | 'therapists' | 'revenue' | 'reports' | 'therapyRevenue' | 'appointmentMgmt' | 'sessions' | 'financial' | 'analytics' | 'globalSettings' | 'content' | 'moderation' | 'announcements';
 
 interface SidebarProps {
   activeSection: Section;
@@ -21,13 +21,18 @@ const Sidebar: React.FC<SidebarProps> = ({
     { id: 'home', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'users', label: 'Users', icon: Users },
     { id: 'bookings', label: 'Bookings', icon: Calendar },
-    { id: 'appointments', label: 'Appointments', icon: Clock },
+    { id: 'appointmentMgmt', label: 'Appointments', icon: Clock },
     { id: 'therapists', label: 'Therapists', icon: Stethoscope },
+    { id: 'sessions', label: 'Sessions', icon: CalendarCheck },
+    { id: 'financial', label: 'Financial', icon: CreditCard },
+    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
     { id: 'revenue', label: 'Revenue', icon: TrendingUp },
     { id: 'therapyRevenue', label: 'Revenue by Type', icon: DollarSign },
-    { id: 'employees', label: 'Employees', icon: Briefcase },
-    { id: 'appointmentMgmt', label: 'Appointment Mgmt', icon: Calendar },
     { id: 'reports', label: 'Reports', icon: FileText },
+    { id: 'content', label: 'Content', icon: BookOpen },
+    { id: 'moderation', label: 'Moderation', icon: MessageSquare },
+    { id: 'announcements', label: 'Announcements', icon: Bell },
+    { id: 'globalSettings', label: 'Settings', icon: Settings },
   ];
 
   return (

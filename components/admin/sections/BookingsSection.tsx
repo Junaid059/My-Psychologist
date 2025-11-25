@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Search, Edit2, Trash2, Eye, CheckCircle, XCircle, Clock, DollarSign, Loader, AlertCircle } from 'lucide-react';
+import Modal from '@/components/ui/modal';
 
 interface Booking {
   _id: string;

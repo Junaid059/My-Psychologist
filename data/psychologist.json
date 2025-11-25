@@ -1,0 +1,263 @@
+{
+  "pomodoro_sessions": [
+    {
+      "id": "session_1764064684332_v3tmpsj23",
+      "userId": "demo-user",
+      "mode": "break",
+      "duration": 5,
+      "completedAt": "2025-11-25T09:58:04.282Z",
+      "taskId": null,
+      "taskTitle": null,
+      "distractions": 0,
+      "createdAt": "2025-11-25T09:58:04.332Z"
+    },
+    {
+      "id": "session_1764064684316_33bi7ecyd",
+      "userId": "demo-user",
+      "mode": "break",
+      "duration": 5,
+      "completedAt": "2025-11-25T09:58:04.280Z",
+      "taskId": null,
+      "taskTitle": null,
+      "distractions": 0,
+      "createdAt": "2025-11-25T09:58:04.316Z"
+    },
+    {
+      "id": "session_1764064617154_i933w5xbf",
+      "userId": "demo-user",
+      "mode": "work",
+      "duration": 1,
+      "completedAt": "2025-11-25T09:56:56.285Z",
+      "taskId": null,
+      "taskTitle": null,
+      "distractions": 0,
+      "createdAt": "2025-11-25T09:56:57.154Z"
+    },
+    {
+      "id": "session_1764064617157_z8frdh12l",
+      "userId": "demo-user",
+      "mode": "work",
+      "duration": 1,
+      "completedAt": "2025-11-25T09:56:56.279Z",
+      "taskId": null,
+      "taskTitle": null,
+      "distractions": 0,
+      "createdAt": "2025-11-25T09:56:57.157Z"
+    },
+    {
+      "id": "session_1764064383665_rf10pf8vi",
+      "userId": "demo-user",
+      "mode": "work",
+      "duration": 1,
+      "completedAt": "2025-11-25T09:53:03.258Z",
+      "taskId": null,
+      "taskTitle": null,
+      "distractions": 0,
+      "createdAt": "2025-11-25T09:53:03.665Z"
+    },
+    {
+      "id": "session_1764064383668_0e15vp3cz",
+      "userId": "demo-user",
+      "mode": "work",
+      "duration": 1,
+      "completedAt": "2025-11-25T09:53:03.253Z",
+      "taskId": null,
+      "taskTitle": null,
+      "distractions": 0,
+      "createdAt": "2025-11-25T09:53:03.668Z"
+    },
+    {
+      "id": "session_1764063576033_z2iid23j0",
+      "userId": "demo-user",
+      "mode": "work",
+      "duration": 1,
+      "completedAt": "2025-11-25T09:39:33.275Z",
+      "createdAt": "2025-11-25T09:39:36.034Z"
+    },
+    {
+      "id": "session_1764063576037_k5yje8dd2",
+      "userId": "demo-user",
+      "mode": "work",
+      "duration": 1,
+      "completedAt": "2025-11-25T09:39:33.274Z",
+      "createdAt": "2025-11-25T09:39:36.037Z"
+    },
+    {
+      "id": "session_1764064785305_0t6ltgudk",
+      "userId": "demo-user",
+      "mode": "work",
+      "duration": 1,
+      "completedAt": "2025-11-25T09:59:45.270Z",
+      "taskId": "1764064717542",
+      "taskTitle": "sasa",
+      "distractions": 0,
+      "createdAt": "2025-11-25T09:59:45.305Z"
+    },
+    {
+      "id": "session_1764064785331_gxkyywkfp",
+      "userId": "demo-user",
+      "mode": "work",
+      "duration": 1,
+      "completedAt": "2025-11-25T09:59:45.275Z",
+      "taskId": "1764064717542",
+      "taskTitle": "sasa",
+      "distractions": 0,
+      "createdAt": "2025-11-25T09:59:45.331Z"
+    }
+  ],
+  "mood_entries": [
+    {
+      "id": "entry_1764065809551",
+      "userId": "demo-user",
+      "date": "2025-11-25T10:16:08.229Z",
+      "moodLevel": 6,
+      "emotions": [
+        "Sad",
+        "Anxious",
+        "Angry"
+      ],
+      "triggers": [
+        "Work",
+        "Family",
+        "Health",
+        "Money"
+      ],
+      "activities": [
+        "Exercise",
+        "Socializing",
+        "Work"
+      ],
+      "notes": "gegbvz",
+      "gratitude": "zgszye",
+      "createdAt": "2025-11-25T10:16:51.088Z"
+    },
+    {
+      "id": "entry_1764065809551",
+      "userId": "demo-user",
+      "date": "2025-11-25T10:16:08.229Z",
+      "moodLevel": 6,
+      "emotions": [
+        "Sad",
+        "Anxious",
+        "Angry"
+      ],
+      "triggers": [
+        "Work",
+        "Family",
+        "Health",
+        "Money"
+      ],
+      "activities": [
+        "Exercise",
+        "Socializing",
+        "Work"
+      ],
+      "notes": "gegbvz",
+      "gratitude": "zgszye",
+      "createdAt": "2025-11-25T10:16:51.088Z",
+      "updatedAt": "2025-11-25T10:26:15.862Z"
+    },
+    {
+      "id": "entry_1764066375887",
+      "userId": "demo-user",
+      "date": "2025-11-25T10:16:08.229Z",
+      "moodLevel": 5,
+      "emotions": [],
+      "triggers": [],
+      "activities": [],
+      "notes": "",
+      "gratitude": null,
+      "createdAt": "2025-11-25T10:26:16.250Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "user_001",
+      "email": "user@test.com",
+      "password": "$2a$10$6VR8yFJIRJS7SMIqL2luaeD8CTIE7/8scoOE1KHqoDgIXDi.QC9.2",
+      "firstName": "Test",
+      "lastName": "User",
+      "phone": "+1234567890",
+      "country": "USA",
+      "currency": "USD",
+      "avatar": null,
+      "age": 25,
+      "location": "New York, USA",
+      "language": "English",
+      "bio": "Test user account for demonstration",
+      "emergencyContact": "+1987654321",
+      "isActive": true,
+      "createdAt": "2025-11-25T11:05:39.605Z",
+      "lastLogin": null
+    }
+  ],
+  "employees": [],
+  "services": [
+    {
+      "id": "service_individual",
+      "name": "Individual Therapy",
+      "description": "One-on-one therapy session",
+      "durationMinutes": 60,
+      "basePriceUSD": 100,
+      "basePricePKR": 5000,
+      "category": "Individual",
+      "isActive": true,
+      "createdAt": "2025-11-25T11:05:39.425Z",
+      "updatedAt": "2025-11-25T11:05:39.425Z"
+    },
+    {
+      "id": "service_couples",
+      "name": "Couples Therapy",
+      "description": "Therapy session for couples",
+      "durationMinutes": 90,
+      "basePriceUSD": 150,
+      "basePricePKR": 7500,
+      "category": "Couples",
+      "isActive": true,
+      "createdAt": "2025-11-25T11:05:39.425Z",
+      "updatedAt": "2025-11-25T11:05:39.425Z"
+    },
+    {
+      "id": "service_family",
+      "name": "Family Therapy",
+      "description": "Family therapy session",
+      "durationMinutes": 90,
+      "basePriceUSD": 120,
+      "basePricePKR": 6000,
+      "category": "Family",
+      "isActive": true,
+      "createdAt": "2025-11-25T11:05:39.425Z",
+      "updatedAt": "2025-11-25T11:05:39.425Z"
+    },
+    {
+      "id": "service_group",
+      "name": "Group Therapy",
+      "description": "Group therapy session",
+      "durationMinutes": 60,
+      "basePriceUSD": 75,
+      "basePricePKR": 3750,
+      "category": "Group",
+      "isActive": true,
+      "createdAt": "2025-11-25T11:05:39.425Z",
+      "updatedAt": "2025-11-25T11:05:39.425Z"
+    }
+  ],
+  "appointments": [],
+  "bookings": [],
+  "admin_users": [
+    {
+      "id": "admin_001",
+      "email": "admin@mypsychologist.com",
+      "password": "$2a$10$XK.25CJKCT4uefry6B86AOzyTNFGF/KGT.uAgMVB36xs7ugtuvrG.",
+      "firstName": "Admin",
+      "lastName": "User",
+      "role": "admin",
+      "permissions": "[\"manage_all\"]",
+      "isActive": true,
+      "lastLoginDate": null,
+      "createdAt": "2025-11-25T11:05:39.526Z",
+      "updatedAt": "2025-11-25T11:05:39.526Z"
+    }
+  ],
+  "sessions": []
+}
